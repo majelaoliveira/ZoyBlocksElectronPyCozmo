@@ -1,0 +1,42 @@
+/* terminal.css */
+body {
+      font-family: monospace;
+      background-color: #111;
+      color: #0f0;
+      padding: 20px;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+    #terminal {
+      flex-grow: 1;
+      border: 1px solid #0f0;
+      padding: 10px;
+      overflow-y: auto;
+      background-color: #000;
+      display: flex;
+      flex-direction: column; /* 🔥 corrigido: mensagens em ordem normal */
+    }
+    #input-container {
+      display: flex;
+      margin-top: 10px;
+    }
+    #comando-input {
+      flex-grow: 1;
+      background-color: #222;
+      color: #0f0;
+      border: 1px solid #0f0;
+      padding: 8px;
+    }
+    button {
+      background-color: #444;
+      color: #0f0;
+      border: 1px solid #0f0;
+      padding: 8px 12px;
+      cursor: pointer;
+    }
+    .message-type-system { color: #00aaff; }
+    .message-type-sent { color: #88ff88; }
+    .message-type-received { color: #ff8888; }
+    .message-type-error { color: #ff0000; }

@@ -1,0 +1,18 @@
+html,
+body {
+  margin: 0;
+  height: 100vh;
+  /* altura da tela toda */
+  font-family: sans-serif;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+#container {
+  flex: 1;
+  display: flex;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}

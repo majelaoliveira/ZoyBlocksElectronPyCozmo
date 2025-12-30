@@ -1,0 +1,14 @@
+{
+  "name": "zoyblocks-electron-cozmo",
+  "version": "0.1.0",
+  "main": "src/main/main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "devDependencies": {
+    "electron": "^29.0.0"
+  },
+  "dependencies": {
+    "dotenv": "^17.2.3"
+  }
+}

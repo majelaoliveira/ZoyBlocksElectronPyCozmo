@@ -1,0 +1,19 @@
+// Instalação do electron
+npm install electron --save-dev
+
+// Instalação das ferramentas de gerenciamento de builder
+npm install electron-builder --save-dev
+npm install electron-rebuild --save-dev
+
+// Instalação do blockly
+npm install blockly --save
+
+//utilitário simples de cópia, usado no package.json 
+//para copiar blockly atualizado do node_modulo direto em nossos arquivos assets
+npm install --save-dev cpx 
+
+// O dotenv permite carregar um arquivo .env automaticamente no início do app.
+npm install dotenv
+
+// cross-env (ele garante compatibilidade entre Windows, Linux e macOS):
+npm install --save-dev cross-env

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self'; object-src 'none';">
+    <title>Zoy Jogos - Universo do Conhecimento</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="zoyjogos.css">
+</head>
+
+<body>
+    <div class="stars"></div>
+
+    <div id="header">
+        <img id="banner" src="../../../assets/imgs/logo_zoy.png" height="80" alt="Zoy Logo">
+        <div id="subtitle">Aprenda Brincando</div>
+    </div>
+
+    <svg id="game-map" height="100%" width="100%" version="1.1" xmlns="http://www.w3.org/2000/svg"
+        xmlns:xlink="http://www.w3.org/1999/xlink">
+        
+        <defs>
+            <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" style="stop-color:#CC2277;stop-opacity:1" />
+                <stop offset="50%" style="stop-color:#FF007B;stop-opacity:1" />
+                <stop offset="100%" style="stop-color:#6f42c1;stop-opacity:1" />
+            </linearGradient>
+            <filter id="neon" x="-20%" y="-20%" width="140%" height="140%">
+                <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+                <feMerge>
+                    <feMergeNode in="coloredBlur"/>
+                    <feMergeNode in="SourceGraphic"/>
+                </feMerge>
+            </filter>
+        </defs>
+
+        <g transform="translate(-150,-60)">
+            
+            <svg height="100%" width="100%" viewBox="0 0 100 100" preserveAspectRatio="none" x="150" y="60">
+                <path id="path" d="M 15,20 Q 50,5 85,50 T 30,80"></path>
+            </svg>
+            
+            <svg height="150" width="300" x="15%" y="15%">
+                <g class="icon" id="icon-quiz">
+                    <a id="link-quiz" xlink:href="quiz/zoy_quiz.html">
+                        <circle cx="150" cy="60" r="45" class="iconBack"></circle>
+                        <image xlink:href="../../../assets/icons/iconQuiz.png" height="60" width="60" x="120" y="30"></image>
+                        <circle cx="150" cy="60" r="45" class="iconBorder" fill="none"></circle>
+                        <text x="150" y="135">Quiz</text>
+                    </a>
+                </g>
+            </svg>
+            
+            <svg height="150" width="300" x="80%" y="45%">
+                <g class="icon" id="icon-pong">
+                    <a id="link-pong" xlink:href="zoy_pong/zoy_pong.html">
+                        <circle cx="150" cy="60" r="45" class="iconBack"></circle>
+                        <image xlink:href="../../../assets/icons/iconPong.png" height="60" width="60" x="120" y="30"></image>
+                        <circle cx="150" cy="60" r="45" class="iconBorder" fill="none"></circle>
+                        <text x="150" y="135">Zoy Pong</text>
+                    </a>
+                </g>
+            </svg>
+            
+            <svg height="150" width="300" x="25%" y="75%">
+                <g class="icon" id="icon-dino">
+                    <a id="link-dino" xlink:href="dinogame/dinogame.html">
+                        <circle cx="150" cy="60" r="45" class="iconBack"></circle>
+                        <image xlink:href="../../../assets/icons/iconDino.png" height="60" width="60" x="120" y="30"></image>
+                        <circle cx="150" cy="60" r="45" class="iconBorder" fill="none"></circle>
+                        <text x="150" y="135">Zoy Dino</text>
+                    </a>
+                </g>
+            </svg>
+        </g>
+    </svg>
+</body>
+</html>

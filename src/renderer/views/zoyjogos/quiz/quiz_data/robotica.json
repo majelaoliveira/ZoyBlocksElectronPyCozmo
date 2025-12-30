@@ -1,0 +1,23 @@
+[
+  {
+    "id": 1,
+    "question": "O que faz um resistor em um circuito elétrico?",
+    "options": ["Armazena carga elétrica", "Limita a corrente elétrica", "Aumenta a tensão", "Gera energia"],
+    "answer": 1,
+    "explanation": "Resistores limitam a corrente e dissipam energia em forma de calor."
+  },
+  {
+    "id": 2,
+    "question": "Qual sensor mede distância sem contato usando ultrassom?",
+    "options": ["Sensor IR", "Sensor ultrassônico HC-SR04", "Termistor", "Potenciômetro"],
+    "answer": 1,
+    "explanation": "O HC-SR04 mede distância por emissão e recepção de ondas ultrassônicas."
+  },
+  {
+    "id": 3,
+    "question": "Para controlar a velocidade de um motor DC com PWM, qual componente é usado?",
+    "options": ["Resistor", "Transistor / MOSFET", "Capacitor", "Diodo"],
+    "answer": 1,
+    "explanation": "Transistores/MOSFETs são usados como chaves para modular a potência do motor."
+  }
+]

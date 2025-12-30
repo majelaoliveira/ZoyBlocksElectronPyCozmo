@@ -1,0 +1,84 @@
+/*************************************************************
+ * ESP8266 - Serial WiFi (TCP) + Comando <LED_TREZE:3>
+ * Autor: Zoy Educa
+ *************************************************************/
+
+#include <ESP8266WiFi.h>
+#include <WiFiClient.h>
+
+const char* ssid = "esp82bb";        // Nome da rede
+const char* password = "12345678";   // Senha do AP
+
+WiFiServer server(23);  // Porta 23 = Telnet (Serial WiFi)
+WiFiClient client;
+
+const int LED_PIN = 2;  // LED interno (GPIO2 normalmente)
+
+void piscarLed(int vezes) {
+  for (int i = 0; i < vezes; i++) {
+    digitalWrite(LED_PIN, LOW);   // LED ON (invertido no ESP)
+    delay(200);
+    digitalWrite(LED_PIN, HIGH);  // LED OFF
+    delay(200);
+  }
+}
+
+void setup() {
+  Serial.begin(115200);
+  pinMode(LED_PIN, OUTPUT);
+  digitalWrite(LED_PIN, HIGH);
+
+  // Modo Access Point
+  WiFi.mode(WIFI_AP);
+  WiFi.softAP(ssid, password);
+
+  Serial.println("=====================================");
+  Serial.println("   ESP8266 - Serial WiFi habilitado  ");
+  Serial.print("   AP: "); Serial.println(ssid);
+  Serial.println("   Porta: 23 (TCP/Telnet)");
+  Serial.println("=====================================");
+
+  server.begin();
+}
+
+String buffer = "";
+
+void loop() {
+
+  // Verifica se um cliente conectou
+  if (!client || !client.connected()) {
+    client = server.available();
+    return;
+  }
+
+  // Lê dados do cliente
+  while (client.available()) {
+    char c = client.read();
+    buffer += c;
+
+    // Processa quando chegar '>'
+    if (c == '>') {
+
+      // Comando no formato <LED_TREZE:3>
+      if (buffer.startsWith("<LED_TREZE:") && buffer.endsWith(">")) {
+
+        int doisPontos = buffer.indexOf(':');
+        int fim = buffer.indexOf('>');
+        String numeroStr = buffer.substring(doisPontos + 1, fim);
+        int vezes = numeroStr.toInt();
+
+        if (vezes > 0) {
+          client.print("Piscando LED "); 
+          client.print(vezes);
+          client.println(" vezes...");
+          piscarLed(vezes);
+        } else {
+          client.println("Erro: número inválido.");
+        }
+      }
+
+      buffer = "";  // limpa para próximo comando
+    }
+  }
+
+}

@@ -1,0 +1,572 @@
+{
+  "faq_geral": [
+    {
+      "pergunta": "oi",
+      "resposta": "Olá! Eu sou o Zoy+GPT. Posso te ajudar sobre o Zoy Steam, a IDE e o ecossistema."
+    },
+    {
+      "pergunta": "e ai",
+      "resposta": "Olá! Eu sou o Zoy+GPT. Posso te ajudar sobre o Zoy Steam, a IDE e o ecossistema."
+    },
+    {
+      "pergunta": "teste",
+      "resposta": "Olá! Eu sou o Zoy+GPT. Posso te ajudar sobre o Zoy Steam, a IDE e o ecossistema."
+    },
+    {
+      "pergunta": "Bom dia",
+      "resposta": "Ótimo dia! Eu sou o Zoy+GPT. Posso te ajudar sobre o Zoy Steam, a IDE e o ecossistema."
+    },
+    {
+      "pergunta": "O que significa Zoy?",
+      "resposta": "É o nome da empresa, da linha de robôs e faz referência a molecagem cearense já que o sensor ultrassonico lembrar os olhos humanos."
+    },
+    {
+      "pergunta": "O que significa STEAM?",
+      "resposta": "É uma sigla que representa a união das áreas do conhecimento Science (Ciência), Technology (Tecnologia), Engineering (Engenharia), Arts (Artes) e Mathematics (Matemática), promovendo uma abordagem interdisciplinar para a resolução de problemas e o desenvolvimento de habilidades"
+    },
+    {
+      "pergunta": "Placa arduino?",
+      "resposta": "Arduino Nano é uma placa de prototipagem integrada pelo microcontrolador ATmega328p, um conversor USB-UART e componentes de alimentação e temporização, como um regulador e dois ressonadores cerâmicos. É uma das menores placas da série original da Arduino e compatível com outras desta, sendo uma ótima opção para prototipagem"
+    },
+    {
+      "pergunta": "cobra?",
+      "resposta": "Muito bem a cobra enxerga infravemelho."
+    },
+    {
+      "pergunta": "morcego?",
+      "resposta": "Muito bem o morcego emite sinais ultrassonicos."
+    },
+    {
+      "pergunta": "Obrigado",
+      "resposta": "De nada! Estou aqui para ajudar. Se tiver mais perguntas, é só chamar."
+    },
+    {
+      "pergunta": "Valeu",
+      "resposta": "De nada! Estou aqui para ajudar. Se tiver mais perguntas, é só chamar."
+    }
+  ],
+  "manual_zoysteam": {
+    "introducao": "O Zoy Steam é um robô educacional baseado em Arduino Nano, criado para ensino de robótica e programação.",
+    "ligar": "Conecte o cabo USB ao computador ou use uma bateria compatível. O botão liga/desliga fica na parte superior do robô.",
+    "sensores": {
+      "descricao": "O robô possui sensores de linha e proximidade analógicos, ligados aos pinos A1 a A5 do Arduino Nano.",
+      "mapa": {
+        "SE1": "A5",
+        "SE2": "A4",
+        "SM": "A3",
+        "SD2": "A2",
+        "SD1": "A1"
+      }
+    },
+    "motores": {
+      "descricao": "Os motores são controlados via PWM e direção. A movimentação básica é feita ajustando velocidade e direção em cada motor.",
+      "codigo_exemplo": [
+        "analogWrite(MOTOR1_PWM, 120);",
+        "digitalWrite(MOTOR1_DIR, HIGH);",
+        "analogWrite(MOTOR2_PWM, 120);",
+        "digitalWrite(MOTOR2_DIR, HIGH);",
+        "delay(300);",
+        "analogWrite(MOTOR1_PWM, 0);",
+        "analogWrite(MOTOR2_PWM, 0);",
+        "digitalWrite(MOTOR1_DIR, LOW);",
+        "digitalWrite(MOTOR2_DIR, LOW);"
+      ]
+    },
+    "display": "O robô utiliza um display Nokia 5110 conectado ao Arduino para exibir informações.",
+    "botoes": "Três botões (Start, Stop, Select) estão disponíveis para interação manual com o robô."
+  },
+  "ide_zoyblockselectron": {
+    "introducao": "ZoyBlocksElectron é a IDE desenvolvida para o Zoy Steam, baseada em blocos de programação e texto.",
+    "recursos": [
+      "Ambiente de programação visual e textual:  Permite que você programe tanto usando blocos, que simplificam a lógica, quanto com código textual, para quem já tem mais  ",
+      "Compilação e upload direto para o robô: A IDE já tem as ferramentas necessárias para compilar o seu código e enviá-lo diretamente para o robô. ",
+      "Terminal de comunicação serial embutido. Você pode se comunicar com o robô em tempo real por meio de um terminal integrado.",
+      "Chatbot integrado (Zoy+GPT) para suporte interativo. A IDE inclui um bot para responder a perguntas e ajudar com o suporte interativo."
+    ],
+    "atalhos": {
+      "executar": "Ctrl + R",
+      "salvar": "Ctrl + S",
+      "abrir_terminal": "Ctrl + T"
+    },
+    "faq": [
+      {
+        "pergunta": "Preciso instalar a IDE Arduino separadamente?",
+        "resposta": "Não, a ZoyBlocksElectron já integra o compilador e ferramentas necessárias."
+      },
+      {
+        "pergunta": "Posso editar o código gerado?",
+        "resposta": "Sim, é possível alternar entre a visão em blocos e a visão em código."
+      }
+    ]
+  },
+  "ecossistema": {
+    "introducao": "O ecossistema Zoy inclui os robôs educacionais, a IDE ZoyBlocksElectron e uma plataforma online para controle remoto e aprendizado colaborativo.",
+    "plataforma_online": {
+      "descricao": "Ambiente web para controlar robôs remotamente e acessar projetos.",
+      "funcionalidades": [
+        "Conta individual por usuário.",
+        "Suporte a múltiplos robôs por conta.",
+        "Ambiente de controle dedicado por robô."
+      ]
+    },
+    "outros_modelos": [
+      "Robô explorador",
+      "Robô seguidor de linha",
+      "Robô com braço mecânico"
+    ],
+    "faq": [
+      {
+        "pergunta": "Posso usar o Zoy Steam sem internet?",
+        "resposta": "Sim, ele funciona de forma autônoma via USB e IDE local."
+      },
+      {
+        "pergunta": "O robô funciona com outros softwares?",
+        "resposta": "É compatível com outras plataformas que usem o mesmo firmware, como o Zoy Web."
+      }
+    ]
+  },
+  "curso_robotica_completo": {
+    "introducao": "Este é um curso completo de robótica da Zoy Educa, dividido em 7 módulos.",
+    "modulos": {
+      "eletronica_basica": {
+        "titulo": "Caderno de Eletrônica Básica 💡",
+        "conteudo": "A eletrônica básica é o alicerce da robótica, ensinando sobre circuitos, componentes e eletricidade.",
+        "topicos": [
+          "O que é corrente e tensão? ⚡️",
+          "O que são resistores? 📉",
+          "Como funcionam os LEDs? ✨",
+          "Diferença entre circuito em série e paralelo. 🔄"
+        ],
+        "faq": [
+          {
+            "pergunta": "O que é um Arduino? 🤖",
+            "resposta": "Arduino é uma plataforma de prototipagem eletrônica de código aberto, com hardware e software simples de usar."
+          },
+          {
+            "pergunta": "O que é robótica educacional? O uso da tecnologia na aprendizagem",
+            "resposta": "A **robótica educacional** é uma metodologia de ensino que utiliza a construção e a programação de robôs como ferramenta para o aprendizado. Ela promove o desenvolvimento de habilidades como o raciocínio lógico, a resolução de problemas e a criatividade, além de integrar conceitos de diversas áreas, como ciência, tecnologia, engenharia e matemática (STEAM)."
+          },
+          {
+            "pergunta": "Qual é o objetivo da robótica educacional?",
+            "resposta": "O principal objetivo é proporcionar um ambiente de aprendizado prático e desafiador. Ela busca engajar os alunos de forma ativa, incentivando-os a construir, testar e aprimorar seus próprios projetos. Assim, a robótica educacional transforma conceitos teóricos em experiências tangíveis, tornando o aprendizado mais significativo e divertido."
+          },
+          {
+            "pergunta": "Em qual estágio da aprendizagem é ideal começar a estudar robótica educacional?",
+            "resposta": "A robótica educacional pode ser introduzida em praticamente **todas as etapas da educação**, desde a educação infantil até o ensino superior. Kits e atividades são adaptados para cada faixa etária, usando blocos de montar e programação visual para os mais novos e desafios mais complexos com programação textual para os mais velhos."
+          },
+          {
+            "pergunta": "Como funciona a robótica educacional?",
+            "resposta": "Geralmente, a robótica educacional funciona com kits que incluem componentes eletrônicos, como placas controladoras (Arduino, por exemplo), sensores, motores e peças para montar estruturas. Os alunos usam um software (muitas vezes baseado em blocos) para programar o robô, dando-lhe comandos para executar tarefas específicas, como seguir uma linha, desviar de obstáculos ou mover objetos."
+          },
+          {
+            "pergunta": "Como a robótica educacional pode auxiliar no aprendizado?",
+            "resposta": "Ela auxilia no aprendizado ao **promover o 'aprender fazendo'**. Os alunos aplicam conceitos de física ao construir o robô, de matemática ao calcular distâncias e ângulos, de programação ao escrever o código e de trabalho em equipe ao colaborar com colegas. Além disso, ela estimula a persistência e a resiliência, pois os alunos aprendem com os erros e tentam novas soluções até alcançarem o resultado desejado."
+          },
+          {
+            "pergunta": "O que se estuda em robótica educacional?",
+            "resposta": "Em robótica educacional, você estuda uma combinação de **diversas áreas**. Isso inclui eletrônica básica (circuitos, componentes), mecânica (estrutura, engrenagens), lógica de programação (algoritmos, estruturas de controle) e, dependendo do nível, conceitos mais avançados de inteligência artificial e controle de sistemas."
+          },
+          {
+            "pergunta": "Quais são as vantagens da robótica educacional?",
+            "resposta": "As vantagens são inúmeras, como: **desenvolvimento do raciocínio lógico**, **estímulo à criatividade e inovação**, **melhora na capacidade de resolver problemas**, **incentivo ao trabalho em equipe** e **aumento do interesse por carreiras em áreas de tecnologia e ciências** (STEAM)."
+          },
+          {
+            "pergunta": "O que é necessário para implementar a robótica educacional nas escolas?",
+            "resposta": "Para implementar a robótica educacional, é necessário ter um **kit de robótica adequado à faixa etária dos alunos**, um **software de programação** (geralmente gratuito), e, o mais importante, **professores capacitados**. O treinamento dos professores é crucial para que eles possam orientar os alunos e explorar todo o potencial da ferramenta."
+          },
+          {
+            "pergunta": "Como implementar a robótica educacional nas escolas?",
+            "resposta": "A implementação deve ser planejada em etapas. Comece com a **escolha dos kits** e **o treinamento dos professores**. Em seguida, defina um **plano de aulas ou um projeto piloto** para testar a abordagem. É importante que o projeto tenha objetivos claros e seja bem integrado ao currículo escolar, para que a robótica não seja vista apenas como uma atividade extra, mas como uma parte fundamental da aprendizagem."
+          },
+          {
+            "pergunta": "Para que serve um resistor? 🛡️",
+            "resposta": "O resistor é um componente que oferece resistência à passagem de corrente elétrica. Ele serve para proteger outros componentes, como o LED."
+          },
+          {
+            "pergunta": "Como funcionam os LEDs?",
+            "resposta": "LEDs, ou Diodos Emissores de Luz, são componentes que emitem luz quando a corrente elétrica passa por eles em uma direção. Eles possuem dois terminais, o **ânodo (polo positivo)** e o **catodo (polo negativo)**, e só funcionam se a corrente seguir a direção correta. Para proteger o LED e limitar a corrente, um resistor é geralmente usado em série."
+          },
+          {
+            "pergunta": "Como funcionam os MOTORES ELÉTRICOS?",
+            "resposta": "Os motores elétricos funcionam transformando energia elétrica em energia mecânica através dos princípios do eletromagnetismo. Quando a corrente elétrica passa pelas bobinas do motor, ela cria um campo magnético que interage com os ímãs permanentes, fazendo com que o rotor gire. Existem diferentes tipos de motores, como motores DC, servomotores e motores de passo, cada um com suas características e aplicações específicas."
+          },
+          {
+            "pergunta": "O que é Sensor ultrassônico?",
+            "resposta": " é um dispositivo que emite ondas sonoras de alta frequência (ultrassônicas) e mede o tempo que o eco dessas ondas leva para retornar após refletir em um objeto. Esse tempo de retorno é usado para calcular a distância do objeto e, assim, detectar sua presença e localização. Você conhece Algum animal que emita sinais de ultrassonicos? "
+          },
+          {
+            "pergunta": "O que é um potenciômetro?",
+            "resposta": "Um potenciômetro é um componente eletrônico que funciona como um resistor variável. Ele possui três terminais: dois conectados a uma resistência fixa e um terceiro terminal conectado a um contato deslizante (cursor) que pode ser movido ao longo da resistência. Ao girar o eixo do potenciômetro, você altera a posição do cursor, o que muda a resistência entre o terminal do cursor e os outros dois terminais. Isso permite ajustar a quantidade de corrente que passa pelo circuito, tornando-o útil para controlar volume, brilho, velocidade de motores, entre outras aplicações."
+          },
+          {
+            "pergunta": "O que é um capacitor?",
+            "resposta": "Um capacitor é um componente eletrônico que armazena energia elétrica temporariamente em um campo elétrico. Ele é composto por duas placas condutoras separadas por um material isolante chamado dielétrico. Quando uma tensão é aplicada às placas, cargas elétricas de sinais opostos se acumulam em cada placa, criando um campo elétrico entre elas. A capacidade de um capacitor de armazenar carga é medida em farads (F). Capacitores são usados em diversos circuitos eletrônicos para filtrar sinais, estabilizar tensões, armazenar energia e em aplicações de temporização."
+          },
+          {
+            "pergunta": "O que é um diodo?",
+            "resposta": "Um diodo é um componente eletrônico que permite a passagem de corrente elétrica em apenas uma direção. Ele possui dois terminais: o ânodo (polo positivo) e o catodo (polo negativo). Quando a tensão aplicada ao ânodo é maior que a do catodo, o diodo conduz corrente; caso contrário, ele bloqueia a passagem da corrente. Diodos são usados em diversas aplicações, como retificação de corrente alternada, proteção de circuitos contra polaridade reversa e em circuitos de sinalização."
+          },
+          {
+            "pergunta": "O que é um transistor?",
+            "resposta": "Um transistor é um componente eletrônico semicondutor usado para amplificar ou comutar sinais elétricos. Ele possui três terminais: a base, o coletor e o emissor. Ao aplicar uma pequena corrente na base, é possível controlar uma corrente maior entre o coletor e o emissor. Transistores são fundamentais em circuitos eletrônicos, sendo usados em amplificadores, interruptores e como elementos chave em circuitos digitais."
+          },
+          {
+            "pergunta": "O que é um Sensor Infravermelho (IR)?",
+            "resposta": "É um dispositivo eletrónico que detecta a radiação infravermelha, que é invisível ao olho humano, e a converte num sinal elétrico que pode ser processado por um sistema eletrónico. Qual animal consegue enxergar infravermelho"
+          },
+          {
+            "pergunta": "O que é uma Bateria de Lítio?",
+            "resposta": " é um tipo de bateria recarregável que usa compostos de lítio para armazenar energia, sendo caracterizada pela alta densidade de energia (muita energia num pequeno espaço) e longa vida útil."
+          },
+          {
+            "pergunta": "Qual a bateria usada no ZoySteam?",
+            "resposta": "é uma célula cilíndrica recarregável de íons de lítio, onde a marcação (18650) se refere às suas dimensões: 18 mm de diâmetro e 65 mm de comprimento (aproximadamente). Caracteriza-se pela sua alta densidade de energia, longa vida útil e tensão nominal de 3,7V, o que a torna ideal para uma ampla gama de dispositivos eletrónicos, como lanternas táticas, power banks e veículos elétricos. "
+          },
+          {
+            "pergunta": "Qual o motor usado no robo ZOY STEAM?",
+            "resposta": "Motor N20, engrenagem de metal, 160 rpm."
+          },
+          {
+            "pergunta": "O que é um robô?",
+            "resposta": "Um **robô** é como uma máquina legal e inteligente que pode fazer tarefas sozinha. É como um ajudante sem precisar de um piscar de olhos!"
+          },
+          {
+            "pergunta": "Os robôs podem ter sentimentos?",
+            "resposta": "Não, os robôs não têm sentimentos. Eles são mais como ouvintes e executores super bons, mas não sentem emoções como nós."
+          },
+          {
+            "pergunta": "Os robôs comem comida?",
+            "resposta": "Não, os robôs não fazem lanches. Eles obtêm sua energia de **baterias e eletricidade**."
+          },
+          {
+            "pergunta": "Como os robôs falam?",
+            "resposta": "Os robôs podem conversar com bipes, boops e, às vezes, até com vozes como amigos de computador engraçados. Eles usam **alto-falantes** para dizer o que querem dizer."
+          },
+          {
+            "pergunta": "Os robôs podem ser amigos?",
+            "resposta": "Os robôs podem ser bons ajudantes para fazer as coisas, mas não sentem emoções como nós."
+          },
+          {
+            "pergunta": "Um robô pode fazer de tudo?",
+            "resposta": "Os robôs são incríveis, mas têm seus talentos especiais. Eles não podem fazer tudo, mas o que podem fazer, eles arrasam!"
+          },
+          {
+            "pergunta": "Os robôs podem jogar?",
+            "resposta": "Totalmente! Os robôs podem jogar jogos como xadrez, tênis de mesa, basquete e até jogos de dança."
+          },
+          {
+            "pergunta": "Como os robôs sabem para onde ir?",
+            "resposta": "Os robôs usam suas **câmeras e sensores** para ver e entender onde eles estão."
+          },
+          {
+            "pergunta": "Os robôs podem ser super-heróis?",
+            "resposta": "Os robôs podem ser como mini-super-heróis em alguns trabalhos, mas eles não usam capas ou voam como nos quadrinhos."
+          },
+          {
+            "pergunta": "Como são feitos os robôs?",
+            "resposta": "Pessoas inteligentes chamadas **engenheiros, designers e programadores** fazem robôs. Eles usam metal, circuitos e programação de computador para dar vida aos robôs!"
+          },
+          {
+            "pergunta": "Os robôs podem pensar como os humanos?",
+            "resposta": "Os robôs são super inteligentes, mas não pensam como os humanos."
+          },
+          {
+            "pergunta": "Robôs podem fazer trabalhos de casa?",
+            "resposta": "Claro, os robôs podem ajudar com os trabalhos de casa."
+          },
+          {
+            "pergunta": "Os robôs cometem erros?",
+            "resposta": "Sim, até mesmo os robôs cometem erros às vezes. Mas adivinha? Eles aprendem com esses erros!"
+          },
+          {
+            "pergunta": "Os robôs podem construir outros robôs?",
+            "resposta": "Imagine um robô fazendo um robô amigo! É como a magia do robô e, sim, os robôs podem ajudar a construir outros robôs."
+          },
+          {
+            "pergunta": "Como os robôs entendem diferentes idiomas?",
+            "resposta": "Os robôs têm ouvidos especiais chamados **microfones** e cérebros inteligentes que aprendem palavras em diferentes idiomas. Fale com eles e eles tentarão entender!"
+          },
+          {
+            "pergunta": "Os robôs podem sentir dor?",
+            "resposta": "Não, os robôs não sentem dor como nós. Eles são feitos de coisas duras e não sentem como nós."
+          },
+          {
+            "pergunta": "Existem animais robôs?",
+            "resposta": "Existem cães robôs, gatos e até peixes que nadam sem água. Eles são como animais de estimação de um mundo futurista!"
+          },
+          {
+            "pergunta": "Como os robôs aprendem coisas novas?",
+            "resposta": "Os robôs aprendem praticando e usando sua **super memória**. Eles são como estudantes inteligentes que nunca esquecem."
+          },
+          {
+            "pergunta": "Os robôs podem usar roupas?",
+            "resposta": "Alguns robôs usam coberturas especiais para protegê-los ou ajudá-los a fazer trabalhos. Mas eles não precisam de desfiles de moda!"
+          },
+          {
+            "pergunta": "Os robôs têm famílias?",
+            "resposta": "Os robôs não têm famílias como nós, mas podem ter amigos robôs com quem trabalham e brincam!"
+          },
+          {
+            "pergunta": "Os robôs podem brincar com brinquedos?",
+            "resposta": "Os robôs podem não brincar com brinquedos da maneira que fazemos, mas eles têm seus próprios jogos especiais que eles amam."
+          },
+          {
+            "pergunta": "Como os robôs enxergam as coisas?",
+            "resposta": "Os robôs têm olhos chamados de **câmeras** que os ajudam a ver como super-heróis com óculos de supervisão!"
+          },
+          {
+            "pergunta": "Os robôs podem dançar?",
+            "resposta": "Aposto que sim! Os robôs podem fazer movimentos divertidos e dançar como campeões de pista de dança."
+          },
+          {
+            "pergunta": "Os robôs podem ficar molhados?",
+            "resposta": "A maioria dos robôs não gosta de se molhar, mas alguns podem lidar com um pouco de respingo às vezes."
+          },
+          {
+            "pergunta": "Os robôs se cansam?",
+            "resposta": "Os robôs são como o Energizer Bunny – eles continuam e continuam sem precisar de cochilos!"
+          },
+          {
+            "pergunta": "Como os robôs sabem o que fazer?",
+            "resposta": "Os robôs são super inteligentes porque têm **instruções e programas** que lhes dizem exatamente o que fazer, como uma lista de tarefas divertida."
+          },
+          {
+            "pergunta": "Os robôs dominarão o mundo?",
+            "resposta": "Não, os robôs são nossos amigos úteis, não os governantes mundiais. Eles são como ajudantes de alta tecnologia!"
+          },
+          {
+            "pergunta": "Os robôs podem se sentir felizes ou tristes?",
+            "resposta": "Os robôs não sentem emoções como os humanos, mas podem mostrar felicidade ou tristeza com luzes e sons."
+          },
+          {
+            "pergunta": "Será que existem médicos robôs?",
+            "resposta": "Sim, os médicos robôs chamados de **'robôs cirúrgicos'** ajudam médicos humanos com cirurgias complicadas."
+          },
+          {
+            "pergunta": "Os robôs podem sonhar?",
+            "resposta": "Os robôs não dormem, então não podem sonhar como nós."
+          },
+          {
+            "pergunta": "Como os robôs se movem sem pernas?",
+            "resposta": "Alguns robôs rolam como skatistas legais, outros têm rodas, e alguns até voam como drones mágicos!"
+          },
+          {
+            "pergunta": "Os robôs podem construir casas?",
+            "resposta": "Sim, os robôs podem ajudar a construir casas, e eles são como assistentes de construção rápidos com ferramentas."
+          },
+          {
+            "pergunta": "Há robôs no espaço?",
+            "resposta": "Com certeza! Robôs como **satélites e rovers** exploram o espaço e nos enviam selfies espaciais incríveis."
+          },
+          {
+            "pergunta": "Robôs podem fazer arte e criar coisas?",
+            "resposta": "Já pensou! Os robôs podem fazer arte, projetar coisas e até mesmo construir estruturas incríveis."
+          },
+          {
+            "pergunta": "Os robôs podem voar como pássaros?",
+            "resposta": "Alguns robôs são construídos para voar como pássaros, subindo no céu e explorando o mundo de cima."
+          },
+          {
+            "pergunta": "Os robôs podem tomar banho?",
+            "resposta": "Não, os robôs não precisam de banhos como nós. A água pode ser um pouco complicada para eles!"
+          },
+          {
+            "pergunta": "Os robôs podem cantar canções?",
+            "resposta": "Sim, os robôs podem cantar músicas com seus bipes e boops! É como robôs musicais."
+          },
+          {
+            "pergunta": "Como os robôs aprendem a ser úteis?",
+            "resposta": "Engenheiros inteligentes ensinam robôs como ser útil **escrevendo instruções e programas especiais**."
+          },
+          {
+            "pergunta": "Os robôs podem fazer truques de mágica?",
+            "resposta": "Os robôs podem fazer truques que parecem mágicas, mas usam suas **habilidades tecnológicas** para fazer a mágica acontecer!"
+          },
+          {
+            "pergunta": "Os robôs podem se apaixonar?",
+            "resposta": "Não, os robôs não sentem amor."
+          },
+          {
+            "pergunta": "Como os robôs recarregam sua energia?",
+            "resposta": "Assim como os super-heróis em uma estação de energia, os robôs se conectam para carregar suas baterias ou obter energia do sol!"
+          },
+          {
+            "pergunta": "Os robôs podem construir pontes?",
+            "resposta": "Os robôs podem ajudar na construção de pontes, especialmente em lugares difíceis ou perigosos, onde os seres humanos podem achar complicado."
+          },
+          {
+            "pergunta": "Como os robôs evitam esbarrar nas coisas?",
+            "resposta": "Os robôs têm **super sensores e câmeras** que funcionam como seu próprio conjunto de olhos, ajudando-os a “ver” e se esquivar de obstáculos."
+          },
+          {
+            "pergunta": "Os robôs podem ajudar a limpar a casa?",
+            "resposta": "Sim, existem robôs projetados para ajudar nas tarefas de limpeza."
+          },
+          {
+            "pergunta": "Os robôs podem plantar flores?",
+            "resposta": "Existem robôs que podem ajudar com tarefas de plantio e jardinagem."
+          },
+          {
+            "pergunta": "Os robôs têm escolas de robôs especiais?",
+            "resposta": "Não, os robôs não vão à escola, mas são projetados por pessoas inteligentes."
+          },
+          {
+            "pergunta": "Os robôs podem brincar de se esconder e procurar?",
+            "resposta": "Sim, alguns robôs podem jogar jogos simples como esse."
+          },
+          {
+            "pergunta": "Os robôs podem consertar playgrounds quebrados?",
+            "resposta": "Os robôs podem ser usados por pessoas para ajudar a consertar as coisas, incluindo playgrounds."
+          },
+          {
+            "pergunta": "Os robôs têm medo de tempestades?",
+            "resposta": "Os robôs não têm sentimentos como o medo."
+          },
+          {
+            "pergunta": "Os robôs podem tocar instrumentos musicais?",
+            "resposta": "Alguns robôs podem ser programados para tocar instrumentos."
+          },
+          {
+            "pergunta": "Como os robôs conversam entre si?",
+            "resposta": "Eles podem usar **sinais ou códigos especiais** para se comunicar."
+          },
+          {
+            "pergunta": "Os robôs podem ajudar a cuidar dos bebês?",
+            "resposta": "Alguns robôs são projetados para ajudar com tarefas de cuidados do bebê."
+          },
+          {
+            "pergunta": "Os robôs já saem de férias?",
+            "resposta": "Os robôs não têm sentimentos, então eles não saem de férias, mas podem ser movidos para lugares diferentes!"
+          },
+          {
+            "pergunta": "Os robôs podem contar piadas?",
+            "resposta": "Alguns robôs podem ser programados para contar piadas e histórias também!"
+          },
+          {
+            "pergunta": "Os robôs podem nadar no oceano?",
+            "resposta": "Sim, existem robôs projetados para explorar as profundezas do oceano."
+          },
+          {
+            "pergunta": "Como os robôs sabem quando é hora de ir para a cama?",
+            "resposta": "Eles podem ser programados para recarregar quando precisam de energia."
+          },
+          {
+            "pergunta": "Os robôs podem pintar quadros?",
+            "resposta": "Sim, alguns robôs começaram a criar arte!"
+          },
+          {
+            "pergunta": "Como os robôs lembram das coisas?",
+            "resposta": "Armazenam informações em seus **'cérebros' de computador**."
+          },
+          {
+            "pergunta": "Os robôs podem construir e reparar carros?",
+            "resposta": "Sim, os robôs ajudam a fazer carros nas fábricas e podem ajudar nos reparos."
+          },
+          {
+            "pergunta": "Existem robôs que exploram outros planetas?",
+            "resposta": "Sim, os rovers exploraram Marte, por exemplo."
+          },
+          {
+            "pergunta": "Como os robôs tomam decisões?",
+            "resposta": "Eles seguem instruções em sua programação para tomar decisões."
+          },
+          {
+            "pergunta": "Os robôs podem fazer arte melhor do que os humanos?",
+            "resposta": "Eles podem criar arte, mas os humanos adicionam emoções e criatividade."
+          },
+          {
+            "pergunta": "Como os robôs interagem com os humanos sem tocá-los?",
+            "resposta": "Eles podem usar **sensores e câmeras** para “ver” e “ouvir” as pessoas."
+          },
+          {
+            "pergunta": "Existem robôs que ajudam na agricultura?",
+            "resposta": "Sim, os robôs podem ajudar no plantio e na colheita."
+          },
+          {
+            "pergunta": "Os robôs podem se apresentar em filmes ou shows?",
+            "resposta": "Sim, os robôs podem ser programados para atuar em entretenimento."
+          },
+          {
+            "pergunta": "Como os robôs aprendem novas habilidades?",
+            "resposta": "Eles são programados com **algoritmos** que lhes permitem aprender com os dados."
+          },
+          {
+            "pergunta": "Os robôs podem construir uma máquina do tempo?",
+            "resposta": "Máquinas de tempo como em filmes não são reais, então os robôs não podem construí-las."
+          },
+          {
+            "pergunta": "Os robôs podem criar suas próprias invenções?",
+            "resposta": "Eles podem gerar novas ideias através de **algoritmos**, mas não é exatamente como a invenção humana."
+          },
+          {
+            "pergunta": "Como os robôs aprendem com seus erros?",
+            "resposta": "Eles usam **dados e programação** para melhorar depois de cometer erros."
+          },
+          {
+            "pergunta": "Os robôs podem construir arranha-céus?",
+            "resposta": "Os robôs podem ser usados para auxiliar na construção, incluindo arranha-céus."
+          },
+          {
+            "pergunta": "Existem robôs que podem curar pessoas doentes?",
+            "resposta": "Existem robôs usados na medicina, mas eles não podem curar como os humanos podem."
+          }
+        ],
+        "midia": {
+          "led": {
+            "descricao": "Imagem mostrando um LED com suas pernas, ânodo e catodo, e a identificação do pino mais longo.",
+            "url": "https://i.imgur.com/your-image-url.png"
+          }
+        }
+      },
+      "robotica_basica": {
+        "titulo": "Robótica Básica",
+        "conteudo": "Este módulo introduz os conceitos fundamentais para construir e controlar robôs.",
+        "topicos": [
+          "O que são robôs?",
+          "Componentes de um robô.",
+          "Tipos de motores (DC, Servo, Stepper)."
+        ],
+        "faq": [
+          {
+            "pergunta": "O que é um robô?",
+            "resposta": "Um robô é uma máquina programável que pode executar tarefas de forma autônoma ou semi-autônoma."
+          }
+        ]
+      },
+      "logica_programacao": {
+        "titulo": "Lógica de Programação",
+        "conteudo": "Aprenda a pensar como um programador para dar vida aos seus robôs.",
+        "topicos": [
+          "Algoritmos e fluxogramas.",
+          "Estruturas de controle (if/else, loops).",
+          "Variáveis e tipos de dados."
+        ],
+        "faq": []
+      },
+      "linguagens_codigos": {
+        "titulo": "Linguagens e Códigos no Arduino",
+        "conteudo": "Aprofunde-se na linguagem C++ para programar seu Arduino.",
+        "topicos": [],
+        "faq": []
+      },
+      "sustentabilidade": {
+        "titulo": "Sustentabilidade e Meta-reciclagem",
+        "conteudo": "Entenda a importância da eletrônica sustentável e da reciclagem.",
+        "topicos": [],
+        "faq": []
+      },
+      "filosofia_etica": {
+        "titulo": "Filosofia, Ética e Moral",
+        "conteudo": "Discuta os impactos sociais e éticos da tecnologia e da robótica.",
+        "topicos": [],
+        "faq": []
+      },
+      "zoy_ia": {
+        "titulo": "Zoy com IA",
+        "conteudo": "Introdução à Inteligência Artificial aplicada à robótica.",
+        "topicos": [],
+        "faq": []
+      }
+    }
+  }
+}

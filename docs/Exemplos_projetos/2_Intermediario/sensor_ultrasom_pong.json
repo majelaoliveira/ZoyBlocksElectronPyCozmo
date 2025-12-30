@@ -1,0 +1,51 @@
+{
+  "blocks": {
+    "languageVersion": 0,
+    "blocks": [
+      {
+        "type": "controls_repeat_ext",
+        "id": "b[]6yeHWp=3.^lq~s/S1",
+        "x": 30,
+        "y": 190,
+        "inputs": {
+          "TIMES": {
+            "block": {
+              "type": "math_number",
+              "id": ";xQ`sd`ChfBy$S%jO`mR",
+              "fields": {
+                "NUM": 500
+              }
+            }
+          },
+          "DO": {
+            "block": {
+              "type": "serial_println",
+              "id": "iYc|`*p2cV/2)GO;OlPL",
+              "inputs": {
+                "TEXT": {
+                  "block": {
+                    "type": "steam_ultrassom_distancia",
+                    "id": "D8ZB$5b=zU@Ni~ddu[zX",
+                    "fields": {
+                      "TRIG": "7",
+                      "ECHO": "8"
+                    }
+                  }
+                }
+              },
+              "next": {
+                "block": {
+                  "type": "aguarde_segundos",
+                  "id": "!?j(s$@w+$aZ~I;b0=NG",
+                  "fields": {
+                    "TEMPO": 0.1
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    ]
+  }
+}

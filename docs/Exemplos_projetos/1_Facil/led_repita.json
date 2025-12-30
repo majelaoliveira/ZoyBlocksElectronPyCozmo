@@ -1,0 +1,62 @@
+{
+  "blocks": {
+    "languageVersion": 0,
+    "blocks": [
+      {
+        "type": "controls_repeat_ext",
+        "id": "mT?Rp+]|$yy=$e@+xOes",
+        "x": 170,
+        "y": 150,
+        "inputs": {
+          "TIMES": {
+            "block": {
+              "type": "math_number",
+              "id": ",:Vu]yMtg#m^GNa#GVV~",
+              "fields": {
+                "NUM": 20
+              }
+            }
+          },
+          "DO": {
+            "block": {
+              "type": "steam_led_define_pino",
+              "id": "fJ|K{rbR3_u=kJz!v#YE",
+              "fields": {
+                "PIN": "D15",
+                "LEVEL": "HIGH"
+              },
+              "next": {
+                "block": {
+                  "type": "aguarde_segundos",
+                  "id": "/y1,0O~!BsU@V/RG1n?j",
+                  "fields": {
+                    "TEMPO": 1
+                  },
+                  "next": {
+                    "block": {
+                      "type": "steam_led_define_pino",
+                      "id": "bQWOX,N0B+wwH|Z58izi",
+                      "fields": {
+                        "PIN": "D15",
+                        "LEVEL": "LOW"
+                      },
+                      "next": {
+                        "block": {
+                          "type": "aguarde_segundos",
+                          "id": "(AFsNGTM1t:aC~)2B%Lm",
+                          "fields": {
+                            "TEMPO": 1
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    ]
+  }
+}

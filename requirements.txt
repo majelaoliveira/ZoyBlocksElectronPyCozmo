@@ -1,0 +1,35 @@
+# ---------------------------
+# PyTorch CPU-only (sem CUDA, sem visão, sem áudio)
+# ---------------------------
+# Linux:
+# torch==2.4.1+cpu --index-url https://download.pytorch.org/whl/cpu
+
+# Windows(Instale manualmente com o comando abaixo ):
+# pip install torch==2.4.1+cpu --index-url https://download.pytorch.org/whl/cpu
+
+
+# ---------------------------
+# Núcleo científico (fixado para evitar NumPy 2.x)
+# ---------------------------
+numpy==1.26.0
+scipy==1.13.1
+scikit-learn==1.7.2   # última versão compatível com numpy 1.26
+
+
+# ---------------------------
+# Transformers + Sentence Transformers
+# (versões compatíveis com Torch + numpy 1.26)
+# ---------------------------
+transformers==4.57.1
+sentence-transformers==5.1.0
+
+# ---------------------------
+# OpenCV (para zoyVision) - mediaPipe identificação de pontos(gestos)
+# ---------------------------
+opencv-python==4.8.1.78
+mediapipe==0.10.21
+
+# ---------------------------
+# Utilitários
+# ---------------------------
+pyinstaller==6.17.0

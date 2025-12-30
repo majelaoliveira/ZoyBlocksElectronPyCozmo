@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; object-src 'self'">
+
+    <title>Zoy Pong — Controle Serial</title>
+
+    <link rel="stylesheet" href="zoy_pong.css">
+    <script src="../../../../assets/libs/phaser/phaser.min.js"></script>
+</head>
+
+<body>
+    <div id="scoreDisplay">
+        Jogador 1 (Sensor): 0 | Jogador 2 (CPU): 0 | Distância: <span id="distanceValue">20.0</span> cm
+    </div>
+
+    <button id="backButton">Voltar</button>
+
+    <div id="game-container"></div>
+
+    <script src="zoy_pong.js"></script>
+</body>
+
+</html>

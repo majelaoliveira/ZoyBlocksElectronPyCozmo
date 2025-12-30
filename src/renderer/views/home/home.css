@@ -1,0 +1,273 @@
+/* -------------- Workspace ----------------- */
+#blocklyDiv {
+  flex-basis: 70%; /* O #blocklyDiv ocupa 70% da largura */
+  flex-grow: 1; /* caso há espaço sem prencher cresce além dos definido em flex-basis */
+  flex-shrink: 0; /* Não vai encolher além dos definido em flex-basis */
+
+  background-color: #e0e0e0;
+  height: 100%; /* Ocupa toda a altura do container */
+  position: relative; /* Crucial para possição do #toggleSidebar */
+  overflow: hidden; /* Esconde qualquer overflow */
+  /* padding-left: 0.5rem; */
+  transition: flex-basis 0.3s ease-in-out;
+}
+
+
+/* ----------------- NavBar ------------------------ */
+.custom-navbar {
+  background: linear-gradient(90deg, #2b1cd1 0%, #3d2fd9 100%);
+  padding: 0.1rem 1rem; 
+  font-family: 'Poppins', sans-serif;
+  font-size: 1rem; /* Base de 16px */
+}
+
+/* Logo menor */
+.logo-img {
+  height: 2.5rem; /* 40px */
+  width: auto;
+  transition: height 0.3s ease;
+}
+
+/* Links do menu */
+.custom-link {
+  color: white !important;
+  font-weight: 400;
+  font-size: 0.9rem; /* 14.4px, um pouco menor */
+  transition: color 0.3s ease;
+}
+
+.custom-link:hover {
+  color: #ffd8ec !important;
+  text-decoration: none;
+}
+
+/* Botões */
+.custom-btn {
+  background: linear-gradient(to right, #CC2277 0%, #FF007B 50%, #CC2277 100%);
+  background-size: 200%;
+  color: white;
+  font-weight: 600;
+  padding: 0.3rem 0.75rem; /* Menor padding */
+  border: none;
+  border-radius: 4px;
+  font-size: 0.85rem; /* 13.6px */
+  transition: background-position 0.4s ease;
+}
+
+.custom-btn:hover {
+  background-position: right;
+  color: white;
+}
+
+/* Botão de menu hamburguer */
+.navbar-toggler {
+  border: none;
+  padding: 0.25rem 0.5rem;
+}
+
+/* Menu hamburguer para página compactada */
+.navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(255,255,255,1)' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+}
+
+/* Responsividade para telas pequenas */
+@media (max-width: 767px) {
+  .custom-navbar {
+    padding: 0.1rem 0.75rem;
+    font-size: 0.9rem; /* Reduz fonte */
+  }
+  
+  .logo-img {
+    height: 2.5rem; /* 40px */
+  }
+
+  .custom-link {
+    font-size: 0.8rem; /* 12.8px */
+  }
+
+  .custom-btn {
+    font-size: 0.75rem; /* 12px */
+    margin-bottom: 1rem;
+  }
+}
+
+
+
+
+/* ----------------- sideBarRigth ----------------------------  */
+#sidebarRight {
+  flex-basis: 30%; /* O sidebarLiveMode ocupa 30% da largura */
+  flex-grow: 0; /* Não vai crescer além dos definido em flex-basis */
+  flex-shrink: 1; /* Vai encolher  além dos definido em flex-basis */
+  background-color: #f8f9fa; /* Cor de fundo do sidebar */
+  overflow-y: auto; /* Scroll vertical */
+  display: flex;
+  flex-direction: column; /* Organiza os botões na vertical */
+  padding: 10px;
+  box-sizing: border-box; /* Garante que o padding não afete o cálculo da altura */
+  transition: transform 0.3s ease-in-out, width 0.3s ease-in-out; /* Animação suave para mudanças de largura */
+}
+
+#sidebarRight button {
+  margin-bottom: 10px; /* Espaço entre os botões */
+}
+
+#sidebarRight select {
+  padding: 5px;
+}
+
+#sidebarRight.hidden {
+  display: none !important;
+  transform: translateX(100%);
+  flex-basis: 0 !important; /* tira o espaço do flex */
+  width: 0 !important;
+  padding: 0;
+  margin: 0;
+}
+
+
+/* -----------  Botão de alternância para a sidebar -----------------*/
+#toggleSidebar {
+  position: absolute; /* Posicionado relativamente ao #blocklyDiv */
+  top: 50%; /* Centralizado verticalmente */
+  transform: translateY(-50%); /* Ajusta para centralização perfeita */
+  right: -1px; /* Posicionado na borda direita do #blocklyDiv */
+  z-index: 1000; /* Garante que fique acima de outros elementos */
+  background-color: #6c757d;
+  color: white; /* Cor do ícone */
+  border: none;
+  height: 3rem;
+  width: 3rem;
+  cursor: pointer;
+  border-radius: 5px 0 0 5px;
+  transition: transform 0.3s ease-in-out; /* Animação suave para hover */
+  display: flex;
+  align-items: center; /* Centraliza o ícone verticalmente */
+  justify-content: center; /* Centraliza o ícone horizontalmente */
+}
+
+#toggleSidebar:hover {
+  background-color: #5a6268;
+}
+
+#toggleSidebar svg {
+  width: 20px;
+  height: 20px;
+  fill: white;
+}
+
+.custom_select {
+  background-color: #e6e6e6;
+  color: black;
+}
+
+
+/* ----------------- Carrosel de Imagens ------------------------ */
+#carouselZoy {
+  max-width: 600px; /* Largura máxima do carrossel */
+  margin: auto; /* Centraliza o carrossel */
+}
+
+.carousel-inner {
+  position: relative;
+  width: 100%;
+  height: 250px; /* Altura fixa para o carrossel */
+  background-color: #f8f9fa;
+}
+
+.carousel-item {
+  height: 100%;
+  object-fit: contain; /* Mantém a proporção da imagem */
+}
+
+.carousel-item img {
+  max-height: 100%;
+  object-fit: contain; /* Mantém a proporção da imagem */
+  margin: auto; /* Centraliza a imagem */
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  filter: invert(1);
+}
+
+
+
+
+/* ------------- Código Python ---------------------------- */
+#areaCodigo {
+  background: white;
+  padding: 10px;
+  border: 1px solid #ccc;
+  height: calc(100% - 50px);
+  margin-top: 10px;
+  white-space: pre-wrap;
+  word-break: break-word;
+  max-height: 100px;
+  overflow-y: auto;
+  position: relative;
+  cursor: pointer; /* Mostra que é clicável */
+}
+
+#areaCodigo.expanded {
+  height: auto;
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+/* Adiciona a seta no canto superior direito */
+#areaCodigo::after {
+  content: "▼"; /* seta para baixo */
+  position: absolute;
+  top: 5px;
+  right: 10px;
+  font-size: 14px;
+  color: #666;
+  transition: transform 0.3s ease;
+}
+
+/* Gira a seta para cima quando expandido */
+#areaCodigo.expanded::after {
+  content: "▲"; /* seta para cima */
+}
+
+
+/* ------------- Terminal de Comunicação ------------------------ */
+#terminal {
+    height: 150px;
+    overflow-y: auto;
+    background: #000;
+    color: #0f0;
+    padding: 5px;
+    font-family: monospace;
+    font-size: 12px;
+    border: 1px solid #ccc;
+  }
+
+
+
+
+
+/* ----------------- Responsividade ----------------------------  */
+@media (max-width: 768px) {
+  #blocklyDiv {
+    flex-basis: 100%; /* O #blocklyDiv ocupa 100% em telas pequenas */
+    flex-grow: 0; /* Não cresce mais */
+  }
+
+  #sidebarRight {
+    flex-basis: 100%; /* O sidebar ocupa 100% da largura */
+    flex-grow: 0; /* Não cresce mais */
+    padding: 5px; /* Ajuste o padding para telas menores */
+  }
+}
