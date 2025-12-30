@@ -1,9 +1,6 @@
 // device-manager.js
 // Unifica Serial + WiFi em uma única API inteligente.
 
-const serial = require("./serial-services");
-const wifi = require("./wifi-services");
-
 let modo = "nenhum";  
 // valores possíveis: "usb", "wifi", "nenhum"
 

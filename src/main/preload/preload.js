@@ -24,7 +24,7 @@ function resolveSrcPathLocal(...segments) {
 const assetLoaderPath = resolveSrcPathLocal("renderer", "utils", "assetLoader.js");
 const assetLoader = require(assetLoaderPath);
 
-// Expor os caminhos de forma organizada
+// Expor os caminhos de forma organizada (Limpamos blocos antigos, mantivemos assets)
 contextBridge.exposeInMainWorld("paths", {
   blockly: {
     core: resolveSrcPath("assets", "libs", "blockly"),
@@ -33,9 +33,7 @@ contextBridge.exposeInMainWorld("paths", {
   },
   blocks_device: {
     basic_blocks: resolveSrcPath("assets", "blocks", "basic_blocks"),
-    zoy_steam_blocks: resolveSrcPath("assets", "blocks", "zoy", "zoy_steam_blocks"),
-    arduino_nano_blocks: resolveSrcPath("assets", "blocks", "arduino", "arduino_nano_blocks"),
-    arduino_uno_blocks: resolveSrcPath("assets", "blocks", "arduino", "arduino_uno_blocks"),
+    cozmo_blocks: resolveSrcPath("assets", "blocks", "cozmo"), // Adicionado foco no Cozmo
   },
   libs: {
     bootstrap: resolveSrcPath("assets", "libs", "bootstrap"),
@@ -44,9 +42,9 @@ contextBridge.exposeInMainWorld("paths", {
     base: resolveSrcPath("assets", "styles"),
   },
   imgs: {
-    icons: resolveSrcPath("assets", "icons"),
-    imgs: resolveSrcPath("assets", "imgs"),
-    flags: resolveSrcPath("assets", "imgs", "flags"),
+    icons: resolveSrcPath("assets", "icons"), // Mantido conforme solicitado
+    imgs: resolveSrcPath("assets", "imgs"),   // Mantido conforme solicitado
+    flags: resolveSrcPath("assets", "imgs", "flags"), // Mantido conforme solicitado
   },
   general: {
     assets: resolveSrcPath("assets"),
@@ -55,63 +53,28 @@ contextBridge.exposeInMainWorld("paths", {
   },
 });
 
-// Expor APIs seguras para o renderer
+// Expor APIs seguras para o renderer focadas no Cozmo e Blockly
 contextBridge.exposeInMainWorld("electronAPI", {
-  // Função para abrir janelas
-  abrirZoyGPT: () => ipcRenderer.invoke("abrir-zoygpt"),
-  abrirZoyVision: () => ipcRenderer.invoke("abrir-zoy-vision"),
+  // Funções de Interface
   abrirTerminalCompleto: () => ipcRenderer.invoke("abrir-terminal-completo"),
-  abrirZoyGames: () => ipcRenderer.invoke("abrir-zoygames"),
-  abrirBlocklyGames: () => ipcRenderer.invoke("abrir-blocklygames"),
-
-  // Funções para o chatbot
-  perguntar: (pergunta) => ipcRenderer.invoke('perguntar', pergunta),
-  logConversation: (pergunta, resposta) => ipcRenderer.invoke('log-conversation', pergunta, resposta),
-
-  // Fuções para conexão de dispositivos
-  listarPortas: () => ipcRenderer.invoke('listar-portas'),
-  conectarPorta: (porta, baudrate) => ipcRenderer.invoke('conectar-porta', porta, baudrate),
-  desconectarPorta: () => ipcRenderer.invoke('desconectar-porta'),
-
-  // Utils globais disponíveis para todas as views - não usa ipcRenderer porque é tudo direto no renderer, não há comunicação com o main ou outro processo fora do renderer
-  utils: {
-    ...assetLoader, // exporta loadCSS, loadScript, loadImage, loadAssetsGroup
-  },
-
-  // Eventos para status e dados da serial
-  
-   onStatusSerial: (callback) => ipcRenderer.on('onStatusSerial', (event, data) => callback(data)),
-   onDadosSerial: (callback) => ipcRenderer.on('onDadosSerial', (event, data) => callback(data)),
-   onErroSerial: (callback) => ipcRenderer.on('onErroSerial', (event, data) => callback(data)),
-   onRespostaSerial: (callback) => ipcRenderer.on('onRespostaSerial', (event, data) => callback(data)),
-   
-  // Funções para envio de dados e execução de código
-   executarCodigo: (codigo) => ipcRenderer.invoke('executar-codigo', codigo),
-   enviarComandoSerial: (comando) => ipcRenderer.invoke('enviar-comando-serial', comando),
-
-   // Adiciona a função goBack, que envia uma mensagem IPC para o Main
-   // Usamos 'navigate-to-view' com o nome da view de destino
-   goBack: () => { ipcRenderer.send('navigate-to-view', 'home')},
-
-  // Expor a API segura para abrir URLs externas
-  // Adicionando a função openExternal no contexto
+  goBack: () => { ipcRenderer.send('navigate-to-view', 'home')},
   openExternal: (url) => ipcRenderer.invoke("open-external", url),
 
+  // Controle do Processo Cozmo (Python Runtime)
+  startCozmo: () => ipcRenderer.invoke("cozmo:start"), //
+  stopCozmo: () => ipcRenderer.invoke("cozmo:stop"),   //
+  enviarComandoCozmo: (cmd) => ipcRenderer.send("cozmo-command", cmd), //
+
+  // Execução de Código Blockly
+  executarCodigo: (codigo) => ipcRenderer.invoke('executar-codigo', codigo), //
+
+  // Utils globais (AssetLoader)
+  utils: {
+    ...assetLoader,
+  },
 });
 
-contextBridge.exposeInMainWorld("wifiAPI", {
-    conectarWifi: (ip) => ipcRenderer.invoke("wifi:conectar", ip),
-    enviarWifi: (cmd) => ipcRenderer.invoke("wifi:enviar", cmd),
-    desconectarWifi: () => ipcRenderer.invoke("wifi:desconectar"),
-    onStatusWifi: (cb) => ipcRenderer.on("onStatusWifi", (_, data) => cb(data)),
-    onDadosWifi: (cb) => ipcRenderer.on("onDadosWifi", (_, data) => cb(data)),
-});
-
-
+// Gerenciador de Dispositivo (Mantido para status de conexão se necessário)
 contextBridge.exposeInMainWorld("deviceManager", {
-    conectarUSB: (porta) => ipcRenderer.invoke("dm:conectarUSB", porta),
-    conectarWifi: (ip)    => ipcRenderer.invoke("dm:conectarWifi", ip),
-    enviar:       (cmd)   => ipcRenderer.invoke("dm:enviar", cmd),
-    desconectar:          () => ipcRenderer.invoke("dm:desconectar"),
-    status:              () => ipcRenderer.invoke("dm:status")
+    status: () => ipcRenderer.invoke("dm:status") //
 });
