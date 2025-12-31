@@ -10,6 +10,13 @@ async function executarCodigo(codigoJS, enviarParaPython) {
 
   // Mapeamento de funções que o Blockly chama para o que o Python entende
   const cozmoActions = {
+    
+    mostrarExpressao: async (emocao) => {
+    enviarParaPython({ cmd: "expression", emotion: emocao });
+  // As animações duram em média 1.5 a 2 segundos
+   return new Promise(resolve => setTimeout(resolve, 2000));
+  },
+
     mover: async (velocidade, tempo) => {
       const v = parseInt(velocidade);
       const t = parseFloat(tempo);
@@ -30,6 +37,22 @@ async function executarCodigo(codigoJS, enviarParaPython) {
       // Calculamos aprox. 1.5s para 90 graus.
       return new Promise(resolve => setTimeout(resolve, 1500));
     },
+    moverCabeca: async (angulo) => {
+    const comando = { cmd: "head", angle: parseInt(angulo) };
+    enviarParaPython(comando);
+  
+    // A cabeça move rápido, 600ms é o suficiente para o respiro
+   return new Promise(resolve => setTimeout(resolve, 600));
+   },
+   moverBraco: async (altura) => {
+   const comando = { cmd: "lift", height: parseInt(altura) };
+   logs.push(`[ACAO] Mover Braço: ${altura}%`);
+  
+   enviarParaPython(comando);
+  
+  // O braço demora um pouco mais a percorrer o curso total
+  return new Promise(resolve => setTimeout(resolve, 1000));
+   },
     
     parar: async () => {
       logs.push(`[ACAO] Parar`);
