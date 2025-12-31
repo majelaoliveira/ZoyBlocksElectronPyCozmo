@@ -36,3 +36,23 @@ Blockly.Blocks['cozmo_stop'] = {
 cozmoGenerator.forBlock['cozmo_stop'] = function(block, generator) {
   return `await parar();\n`;
 };
+
+// 1. Registro Visual
+Blockly.Blocks['cozmo_turn'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Cozmo: Girar")
+        .appendField(new Blockly.FieldNumber(90), "ANGLE")
+        .appendField("graus");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+  }
+};
+
+// 2. Gerador de Código
+ cozmoGenerator.forBlock['cozmo_turn'] = function(block, generator) {
+  const angle = block.getFieldValue('ANGLE');
+  // Este texto 'virar' deve ser idêntico ao nome da função no blockly-service.js
+  return `await virar(${angle});\n`;
+};

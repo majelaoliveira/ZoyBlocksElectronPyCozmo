@@ -22,6 +22,14 @@ async function executarCodigo(codigoJS, enviarParaPython) {
       // Espera o tempo do movimento + um pequeno respiro (200ms) para não atropelar
       return new Promise(resolve => setTimeout(resolve, (t * 1000) + 200));
     },
+
+    virar: async (angulo) => {
+      const comando = { cmd: "turn", angle: parseInt(angulo) };
+      enviarParaPython(comando);
+      // O PyCozmo precisa de tempo para girar. 
+      // Calculamos aprox. 1.5s para 90 graus.
+      return new Promise(resolve => setTimeout(resolve, 1500));
+    },
     
     parar: async () => {
       logs.push(`[ACAO] Parar`);
