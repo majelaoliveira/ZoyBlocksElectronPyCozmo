@@ -37,14 +37,13 @@ async function initApp() {
     await loadAssetsGroup(assetsToLoad.blocklyBlocks);
 
     // Injeta o Blockly usando o ID 'toolbox' do home.html
-    workspace = Blockly.inject("blocklyDiv", {
-      toolbox: document.getElementById("toolbox"),
-      renderer: "zelos",
-      grid: { spacing: 20, length: 3, colour: "#ccc", snap: true },
-      trashcan: true,
-      zoom: { controls: true, wheel: true }
+  workspace = Blockly.inject("blocklyDiv", {
+  toolbox: document.getElementById("toolbox"),
+   renderer: "zelos",
+   grid: null,
+   trashcan: true,
+   zoom: { controls: true, wheel: true }
     });
-
     window.workspace = workspace;
 
     // Atualiza a área de código sempre que o bloco mudar

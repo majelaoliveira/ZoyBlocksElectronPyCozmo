@@ -4,12 +4,21 @@
   flex-grow: 1; /* caso há espaço sem prencher cresce além dos definido em flex-basis */
   flex-shrink: 0; /* Não vai encolher além dos definido em flex-basis */
 
-  background-color: #e0e0e0;
+  background-color:  #ffffff;
   height: 100%; /* Ocupa toda a altura do container */
   position: relative; /* Crucial para possição do #toggleSidebar */
   overflow: hidden; /* Esconde qualquer overflow */
   /* padding-left: 0.5rem; */
   transition: flex-basis 0.3s ease-in-out;
+}
+/* Fundo real do workspace */
+.blocklyMainBackground {
+  fill: #ffffff !important;
+}
+
+/* SVG raiz do Blockly */
+.blocklySvg {
+  background-color: #ffffff !important;
 }
 
 
