@@ -19,7 +19,6 @@ const assetsToLoad = {
     { name: "pt-br", type: "js", path: `${window.paths.blockly.msg}pt-br.js` },
   ],
   blocklyBlocks: [
-    { name: "basic_blocks", type: "js", path: `${window.paths.blocks_device.basic_blocks}basic_blocks.js` },
     { name: "cozmo_blocks", type: "js", path: `${window.paths.blocks_device.cozmo_blocks}cozmo_motions.js` }
   ]
 };
