@@ -20,11 +20,9 @@ const createWindow = () => {
     },
   });
 
-
-// Se main.js está em src/main/ e o HTML em src/renderer/views/...
-mainWindow.loadFile(path.join(__dirname, "..", "renderer", "views", "home", "home.html"));
-}
-
+  // Caminho correto para o HTML baseado na sua árvore src/
+  mainWindow.loadFile(path.join(__dirname, "..", "renderer", "views", "home", "home.html"));
+};
 
 function startCozmo() {
   if (cozmoProcess) return;
@@ -33,26 +31,42 @@ function startCozmo() {
   let scriptPath;
 
   if (app.isPackaged) {
-    // No AppImage, os arquivos extras vão para a pasta 'resources'
+    // Caminhos para o AppImage
     pythonPath = path.join(process.resourcesPath, "venv_cozmo", "bin", "python");
     scriptPath = path.join(process.resourcesPath, "python", "cozmo_server.py");
   } else {
-    // Em desenvolvimento (npm start):
-    // __dirname está em src/main. Precisamos subir dois níveis (..) para chegar na raiz
+    // Caminhos para Desenvolvimento (npm start)
     pythonPath = path.join(__dirname, "..", "..", "venv_cozmo", "bin", "python");
     scriptPath = path.join(__dirname, "..", "..", "python", "cozmo_server.py");
   }
 
   console.log("--- INICIANDO COZMO ---");
-  console.log("Python:", pythonPath);
-  console.log("Script:", scriptPath);
-
+  
   cozmoProcess = spawn(pythonPath, [scriptPath], { 
     stdio: ["pipe", "pipe", "pipe"],
-    // PYTHONUNBUFFERED garante que os logs do Python apareçam em tempo real no Electron
     env: { ...process.env, PYTHONUNBUFFERED: "1" } 
   });
+
+  // CORREÇÃO: O ouvinte de dados deve estar DENTRO da função, 
+  // imediatamente após o processo ser criado (spawn).
+  cozmoProcess.stdout.on("data", (data) => {
+    const msg = data.toString();
+    if (mainWindow) {
+        // Envia logs e frames da câmera para o Renderer (home.js)
+        mainWindow.webContents.send("cozmo-log", msg);
+    }
+  });
+
+  cozmoProcess.stderr.on("data", (data) => {
+    console.error("Erro no Python:", data.toString());
+  });
+
+  cozmoProcess.on("close", (code) => {
+    console.log(`Processo Python encerrado com código: ${code}`);
+    cozmoProcess = null;
+  });
 }
+
 // Função para enviar JSON ao Python via stdin
 function enviarParaCozmo(comando) {
     if (cozmoProcess && cozmoProcess.stdin.writable) {
@@ -67,15 +81,20 @@ function enviarParaCozmo(comando) {
 
 // --- HANDLERS IPC ---
 
+// Iniciar o robô
 ipcMain.handle("cozmo:start", () => {
   startCozmo();
   return { status: true };
 });
 
+// Ligar/Desligar Câmera
+ipcMain.handle("cozmo:camera-toggle", (event, state) => {
+  enviarParaCozmo({ cmd: "toggle_camera", enable: state });
+  return { status: true };
+});
+
+// Executar blocos do Blockly
 ipcMain.handle('executar-codigo', async (event, codigoJS) => {
-    console.log("Executando sequência no Cozmo...");
-    
-    // Passamos a função enviarParaCozmo diretamente para o service
     try {
         return await blocklyService.executarCodigo(codigoJS, enviarParaCozmo);
     } catch (err) {
@@ -84,9 +103,8 @@ ipcMain.handle('executar-codigo', async (event, codigoJS) => {
     }
 });
 
-// Handlers vazios para evitar erros de console no renderer
-ipcMain.handle("abrir-terminal", () => {});
-ipcMain.handle("abrir-zoy-gpt", () => {});
+// Handlers auxiliares
+ipcMain.handle("open-external", (event, url) => shell.openExternal(url));
 
 app.whenReady().then(createWindow);
 

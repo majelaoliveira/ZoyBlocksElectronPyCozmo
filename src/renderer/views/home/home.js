@@ -77,6 +77,11 @@ document.addEventListener("DOMContentLoaded", () => {
     exibirLogNoTerminal("Iniciando conexão com o robô...");
     try {
       await window.electronAPI.startCozmo();
+      // --- A MÁGICA ACONTECE AQUI ---
+        // Assim que a função startCozmo (que é assíncrona) termina, 
+        // liberamos o botão da câmera para o usuário.
+      document.getElementById("btnToggleCamera").disabled = false;
+      
       exibirLogNoTerminal("Cozmo pronto para receber comandos!");
     } catch (e) {
       exibirLogNoTerminal("Erro: " + e.message);
@@ -114,3 +119,41 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
+let cameraAtiva = false;
+
+// 1. Escuta os frames vindos do Python e desenha na tela
+window.electronAPI.onCozmoLog((data) => {
+    try {
+        const msg = JSON.parse(data);
+        if (msg.type === "camera") {
+            const imgElement = document.getElementById("cozmoView");
+            imgElement.src = `data:image/jpeg;base64,${msg.image}`;
+        }
+    } catch (e) {
+        // Ignora logs que não são imagens (texto puro)
+    }
+});
+
+// 2. Controla o botão de ligar/desligar
+document.getElementById("btnToggleCamera").addEventListener("click", async () => {
+    cameraAtiva = !cameraAtiva;
+    const btn = document.getElementById("btnToggleCamera");
+    const imgElement = document.getElementById("cozmoView");
+    const placeholder = document.getElementById("cameraPlaceholder");
+
+    // Envia o comando para o processo principal (main.js)
+    await window.electronAPI.invoke("cozmo:camera-toggle", cameraAtiva);
+
+    // Atualiza a Interface
+    if (cameraAtiva) {
+        btn.innerText = "Desligar Câmera";
+        btn.classList.replace("btn-secondary", "btn-danger");
+        imgElement.style.display = "inline-block";
+        placeholder.style.display = "none";
+    } else {
+        btn.innerText = "Ligar Câmera";
+        btn.classList.replace("btn-danger", "btn-secondary");
+        imgElement.style.display = "none";
+        placeholder.style.display = "block";
+    }
+});

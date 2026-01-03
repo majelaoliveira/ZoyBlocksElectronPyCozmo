@@ -4,6 +4,17 @@ import pycozmo
 import os
 import time
 from PIL import Image
+import io
+import base64
+
+
+def on_camera_image(cli, image):
+    """Processa a imagem e envia para o Electron via stdout"""
+    buffered = io.BytesIO()
+    # JPEG 70% oferece um bom equilíbrio entre qualidade e velocidade de transmissão
+    image.save(buffered, format="JPEG", quality=70)
+    img_str = base64.b64encode(buffered.getvalue()).decode()
+    log({"type": "camera", "image": img_str})
 
 def log(msg):
     print(json.dumps(msg), flush=True)
@@ -103,6 +114,20 @@ try:
                 
                 cli.set_all_backpack_lights(pycozmo.lights.green_light)
                 log({"status": "ok", "cmd": "lift", "height": height_percent})
+
+
+            elif cmd == "toggle_camera":
+                enable = data.get("enable", False)
+                if enable:
+                    cli.enable_camera(enable=True, color=True)
+                    # Adiciona o handler apenas se for ligar
+                    cli.add_handler(pycozmo.event.EvtNewRawCameraImage, on_camera_image)
+                    log({"status": "ok", "msg": "Camera ativada"})
+                else:
+                    cli.enable_camera(enable=False)
+                    # Remove o handler para liberar memória
+                    cli.remove_handler(pycozmo.event.EvtNewRawCameraImage, on_camera_image)
+                    log({"status": "ok", "msg": "Camera desativada"})
 
             elif cmd == "expression":
                 emotion = data.get("emotion", "HAPPY")

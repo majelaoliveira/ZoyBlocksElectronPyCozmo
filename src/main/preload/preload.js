@@ -1,30 +1,35 @@
-const { app, contextBridge, ipcRenderer } = require("electron");
+const { contextBridge, ipcRenderer } = require("electron");
 const path = require("path");
 
-// Detecta se o app está empacotado ou rodando em dev
-const isPackaged = app?.isPackaged || process.env.NODE_ENV === "production";
+// DETECÇÃO DE AMBIENTE MELHORADA
+// Se o caminho contém "node_modules", estamos em modo DEV.
+const isPackaged = !process.resourcesPath.includes('node_modules') && !process.mainModule.filename.includes('node_modules');
 
-// Função auxiliar para gerar caminho dinâmico
-function resolveSrcPath(...segments) {
-  const base = isPackaged
-    ? path.join(process.resourcesPath, "src", ...segments)
-    : path.join(__dirname, "../../", ...segments);
-
-  return `file://${base.replace(/\\/g, "/")}/`;
-}
-
-// Versão que retorna caminho local (sem file://) - útil para require() dinâmico
+// FUNÇÕES DE CAMINHO (Ajustadas para sua árvore src/main/preload)
 function resolveSrcPathLocal(...segments) {
+  // Se estiver em DEV: o preload está em src/main/preload, precisamos subir DOIS níveis para chegar na raiz e entrar em src/
+  // Se estiver em BUILD: os arquivos estão em process.resourcesPath/src/
   return isPackaged
     ? path.join(process.resourcesPath, "src", ...segments)
-    : path.join(__dirname, "../../", ...segments);
+    : path.join(__dirname, "..", "..", ...segments); 
 }
 
-// Importa o assetLoader para carregar CSS, JS e imagens dinamicamente
-const assetLoaderPath = resolveSrcPathLocal("renderer", "utils", "assetLoader.js");
-const assetLoader = require(assetLoaderPath);
+function resolveSrcPath(...segments) {
+  const localPath = resolveSrcPathLocal(...segments);
+  return `file://${localPath.replace(/\\/g, "/")}/`;
+}
 
-// Expor os caminhos de forma organizada (Limpamos blocos antigos, mantivemos assets)
+// 1. CARREGAMENTO DO ASSET LOADER
+// Usamos o caminho absoluto direto para evitar erro de stack
+const assetLoaderPath = resolveSrcPathLocal("renderer", "utils", "assetLoader.js");
+let assetLoader = {};
+try {
+    assetLoader = require(assetLoaderPath);
+} catch (e) {
+    console.error("Erro crítico: Não foi possível carregar o assetLoader em:", assetLoaderPath);
+}
+
+// 2. EXPOSIÇÃO DE CAMINHOS
 contextBridge.exposeInMainWorld("paths", {
   blockly: {
     core: resolveSrcPath("assets", "libs", "blockly"),
@@ -32,8 +37,7 @@ contextBridge.exposeInMainWorld("paths", {
     msg: resolveSrcPath("assets", "libs", "blockly", "msg"),
   },
   blocks_device: {
-    basic_blocks: resolveSrcPath("assets", "blocks", "basic_blocks"),
-    cozmo_blocks: resolveSrcPath("assets", "blocks", "cozmo"), // Adicionado foco no Cozmo
+    cozmo_blocks: resolveSrcPath("assets", "blocks", "cozmo"),
   },
   libs: {
     bootstrap: resolveSrcPath("assets", "libs", "bootstrap"),
@@ -42,39 +46,27 @@ contextBridge.exposeInMainWorld("paths", {
     base: resolveSrcPath("assets", "styles"),
   },
   imgs: {
-    icons: resolveSrcPath("assets", "icons"), // Mantido conforme solicitado
-    imgs: resolveSrcPath("assets", "imgs"),   // Mantido conforme solicitado
-    flags: resolveSrcPath("assets", "imgs", "flags"), // Mantido conforme solicitado
-  },
-  general: {
-    assets: resolveSrcPath("assets"),
-    services: resolveSrcPath("main", "services"),
-    utils: resolveSrcPath("renderer", "utils"),
-  },
+    imgs: resolveSrcPath("assets", "imgs"),
+  }
 });
 
-// Expor APIs seguras para o renderer focadas no Cozmo e Blockly
+// 3. EXPOSIÇÃO DA API (Aqui resolvemos o erro do home.js:2)
 contextBridge.exposeInMainWorld("electronAPI", {
-  // Funções de Interface
-  abrirTerminalCompleto: () => ipcRenderer.invoke("abrir-terminal-completo"),
-  goBack: () => { ipcRenderer.send('navigate-to-view', 'home')},
-  openExternal: (url) => ipcRenderer.invoke("open-external", url),
-
-  // Controle do Processo Cozmo (Python Runtime)
-  startCozmo: () => ipcRenderer.invoke("cozmo:start"), //
-  stopCozmo: () => ipcRenderer.invoke("cozmo:stop"),   //
-  enviarComandoCozmo: (cmd) => ipcRenderer.send("cozmo-command", cmd), //
-
-  // Execução de Código Blockly
-  executarCodigo: (codigo) => ipcRenderer.invoke('executar-codigo', codigo), //
-
-  // Utils globais (AssetLoader)
-  utils: {
-    ...assetLoader,
+  startCozmo: () => ipcRenderer.invoke("cozmo:start"),
+  stopCozmo: () => ipcRenderer.invoke("cozmo:stop"),
+  executarCodigo: (codigo) => ipcRenderer.invoke('executar-codigo', codigo),
+  
+  // Para a Câmera
+  invoke: (channel, data) => {
+    if (channel === "cozmo:camera-toggle") return ipcRenderer.invoke(channel, data);
   },
-});
+  onCozmoLog: (callback) => {
+    ipcRenderer.on("cozmo-log", (event, data) => callback(data));
+  },
 
-// Gerenciador de Dispositivo (Mantido para status de conexão se necessário)
-contextBridge.exposeInMainWorld("deviceManager", {
-    status: () => ipcRenderer.invoke("dm:status") //
+  // Utilitários que o home.js procura na linha 2
+  utils: {
+    loadAssetsGroup: assetLoader.loadAssetsGroup || (() => console.warn("AssetLoader não carregado")),
+    ...assetLoader
+  }
 });
