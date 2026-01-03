@@ -65,13 +65,13 @@ try:
                     # Girar para a direita
                     cli.drive_wheels(turn_speed, -turn_speed, duration=duration)
                 
-                    log({"status": "ok", "cmd": "turn", "angle": angle})
+                log({"status": "ok", "cmd": "turn", "angle": angle})
 
             elif cmd == "head":
                 angle_deg = data.get("angle", 0)
     
-                     # O PyCozmo usa radianos. Convertemos graus para radianos:
-                    # 0 graus é a cabeça nivelada (horizontal)
+                # O PyCozmo usa radianos. Convertemos graus para radianos:
+                # 0 graus é a cabeça nivelada (horizontal)
                 angle_rad = (angle_deg * 3.14159) / 180.0
     
                      # Comando PyCozmo para mover a cabeça
@@ -148,8 +148,61 @@ try:
                cli.stop_all_motors()
                log({"status": "ok", "cmd": "stop"})
 
+            elif cmd == "get_distance":
+            # O PyCozmo atualiza os sensores automaticamente
+               dist = cli.proxi_sensor_mm
+               log({"status": "ok", "distance": dist})
+
+            elif cmd == "set_lights":
+                color_name = str(data.get("color", "white")).lower()
+                
+                # Mapeamento que o PyCozmo entende
+                colors = {
+                    "red": pycozmo.lights.red_light,
+                    "green": pycozmo.lights.green_light,
+                    "blue": pycozmo.lights.blue_light,
+                    "white": pycozmo.lights.white_light,
+                    "off": pycozmo.lights.off_light
+                }
+                
+                # Pega a cor escolhida
+                selected_light = colors.get(color_name, pycozmo.lights.white_light)
+
+                # USANDO A FUNÇÃO SIMPLES (A que funciona sem erro de argumentos)
+                cli.set_all_backpack_lights(selected_light)
+                
+                # Um micro-tempo para o robô processar
+                time.sleep(0.1)
+                log({"status": "ok", "cmd": "lights", "color": color_name})
+                        
+
+            elif cmd == "blink_lights":
+                color_name = data.get("color", "red")
+                times = data.get("times", 3)
+                
+                colors = {
+                    "red": pycozmo.lights.red_light,
+                    "green": pycozmo.lights.green_light,
+                    "blue": pycozmo.lights.blue_light
+                }
+                
+                light = colors.get(color_name, pycozmo.lights.red_light)
+                
+                # Lógica de piscar
+                for _ in range(times):
+                    cli.set_all_backpack_lights(light)
+                    time.sleep(0.3)
+                    cli.set_all_backpack_lights(pycozmo.lights.off_light)
+                    time.sleep(0.3)
+                
+                log({"status": "ok", "cmd": "blink"})
+                
+            elif cmd == "get_battery":
+               volts = cli.battery_voltage
+               log({"status": "ok", "level": volts})
+
             else:
-                log({"status": "error", "msg": "unknown command: " + str(cmd)})
+               log({"status": "error", "msg": "unknown command: " + str(cmd)})
 
         except json.JSONDecodeError:
             log({"status": "error", "msg": "invalid json received"})

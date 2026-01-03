@@ -19,7 +19,8 @@ const assetsToLoad = {
     { name: "pt-br", type: "js", path: `${window.paths.blockly.msg}pt-br.js` },
   ],
   blocklyBlocks: [
-    { name: "cozmo_blocks", type: "js", path: `${window.paths.blocks_device.cozmo_blocks}cozmo_motions.js` }
+    { name: "cozmo_blocks", type: "js", path: `${window.paths.blocks_device.cozmo_blocks}cozmo_motions.js` },
+    { name: "cozmo_luzes", type: "js", path: `${window.paths.blocks_device.cozmo_blocks}cozmo_luzes.js` }
   ]
 };
 
@@ -39,6 +40,7 @@ async function initApp() {
   workspace = Blockly.inject("blocklyDiv", {
   toolbox: document.getElementById("toolbox"),
    renderer: "zelos",
+   sound : false,
    grid: null,
    trashcan: true,
    zoom: { controls: true, wheel: true }
@@ -111,3 +113,4 @@ document.addEventListener("DOMContentLoaded", () => {
     Blockly.svgResize(workspace);
   });
 });
+

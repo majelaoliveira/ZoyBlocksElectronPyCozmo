@@ -106,6 +106,20 @@
     </div>
 
     <xml id="toolbox" style="display: none">
+
+
+        <category name="Luzes" colour="#cf63cf">
+            <block type="cozmo_set_lights">
+                <field name="COLOR">red</field> </block>
+            <block type="cozmo_blink_lights">
+                <value name="TIMES">
+                     <shadow type="math_number"><field name="NUM">3</field></shadow>
+                </value>
+             </block>
+        </category>
+
+
+
         <category name="Movimentos" colour="#5b67a5">
             <block type="cozmo_forward">
                 <value name="SPEED">

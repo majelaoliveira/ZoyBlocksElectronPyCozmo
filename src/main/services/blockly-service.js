@@ -64,6 +64,38 @@ async function executarCodigo(codigoJS, enviarParaPython) {
       logs.push(`[ACAO] Pausa: ${ms}ms`);
       return new Promise(resolve => setTimeout(resolve, ms));
     },
+    ligarLuzes: async (cor) => {
+      const comando = { cmd: "set_lights", color: cor };
+      logs.push(`[ACAO] Luzes: ${cor}`);
+      
+      enviarParaPython(comando);
+      
+      // Respiro de 200ms para garantir que o pacote UDP foi processado
+      return new Promise(resolve => setTimeout(resolve, 300));
+    },
+
+    piscarLuzes: async (cor, vezes) => {
+      const v = parseInt(vezes);
+      const comando = { cmd: "blink_lights", color: cor, times: v };
+      logs.push(`[ACAO] Piscar: ${cor} ${v}x`);
+      
+      enviarParaPython(comando);
+      
+      // O tempo de espera deve ser proporcional ao número de piscadas
+      // (Cada piscada no python leva aprox. 600ms total)
+      const tempoEspera = (v * 600) + 200;
+      return new Promise(resolve => setTimeout(resolve, tempoEspera));
+    },
+
+
+
+
+
+
+
+
+
+
 
     // Injeta o console para debug se houver logs no código do Blockly
     console: {
