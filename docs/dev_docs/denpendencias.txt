@@ -17,3 +17,6 @@ npm install dotenv
 
 // cross-env (ele garante compatibilidade entre Windows, Linux e macOS):
 npm install --save-dev cross-env
+
+
+npm rum copy
