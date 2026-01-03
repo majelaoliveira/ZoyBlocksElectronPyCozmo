@@ -1,5 +1,14 @@
+window.estadoVisao = {
+    rostoDetectado: false,
+    ultimoQR: ""
+};
+console.log("🧠 Memória de Visão Inicializada!");
+
 // home.js - Versão Cozmo Integrada
 const { loadAssetsGroup } = window.electronAPI.utils;
+// 1. Variáveis de estado (coloque no início do arquivo)
+
+
 
 // 1. Configuração de Assets - Focada apenas no essencial e no Cozmo
 const assetsToLoad = {
@@ -20,7 +29,9 @@ const assetsToLoad = {
   ],
   blocklyBlocks: [
     { name: "cozmo_blocks", type: "js", path: `${window.paths.blocks_device.cozmo_blocks}cozmo_motions.js` },
-    { name: "cozmo_luzes", type: "js", path: `${window.paths.blocks_device.cozmo_blocks}cozmo_luzes.js` }
+    { name: "cozmo_luzes", type: "js", path: `${window.paths.blocks_device.cozmo_blocks}cozmo_luzes.js` },
+    { name: "cozmo_vision", type: "js", path: `${window.paths.blocks_device.cozmo_blocks}cozmo_vision.js` },
+    
   ]
 };
 
@@ -47,6 +58,18 @@ async function initApp() {
     });
     window.workspace = workspace;
 
+    // --- ADICIONE ESTE BLOCO AQUI ---
+    window.checarVisao = async function(tipo) {
+        if (!window.estadoVisao) return false;
+        
+        if (tipo === "FACE") {
+            return window.estadoVisao.rostoDetectado;
+        } else if (tipo === "QR") {
+            return window.estadoVisao.ultimoQR !== "";
+        }
+        return false;
+
+     };
     // Atualiza a área de código sempre que o bloco mudar
     workspace.addChangeListener(() => {
       const code = Blockly.JavaScript.workspaceToCode(workspace);
@@ -81,7 +104,7 @@ document.addEventListener("DOMContentLoaded", () => {
         // Assim que a função startCozmo (que é assíncrona) termina, 
         // liberamos o botão da câmera para o usuário.
       document.getElementById("btnToggleCamera").disabled = false;
-      
+
       exibirLogNoTerminal("Cozmo pronto para receber comandos!");
     } catch (e) {
       exibirLogNoTerminal("Erro: " + e.message);
@@ -121,19 +144,31 @@ document.addEventListener("DOMContentLoaded", () => {
 
 let cameraAtiva = false;
 
-// 1. Escuta os frames vindos do Python e desenha na tela
+// 2. Atualização dentro do listener de logs
 window.electronAPI.onCozmoLog((data) => {
     try {
         const msg = JSON.parse(data);
+        
+        // Streaming da Câmera
         if (msg.type === "camera") {
-            const imgElement = document.getElementById("cozmoView");
-            imgElement.src = `data:image/jpeg;base64,${msg.image}`;
+            const view = document.getElementById("cozmoView");
+            if (view) view.src = `data:image/jpeg;base64,${msg.image}`;
+        }
+
+        // Eventos de Visão do OpenCV
+        if (msg.type === "vision_event") {
+            // ATENÇÃO: Usamos window.estadoVisao para garantir que o console e o Blockly vejam
+            window.estadoVisao.rostoDetectado = msg.face;
+            window.estadoVisao.ultimoQR = msg.qrcode;
+            
+            // Força a escrita no console para você ter certeza que o dado chegou
+            if (msg.face) console.log("👤 OpenCV: Rosto na mira!");
+            if (msg.qrcode) console.log("🏁 OpenCV: QR Code lido ->", msg.qrcode);
         }
     } catch (e) {
-        // Ignora logs que não são imagens (texto puro)
+        // console.error("Erro ao processar log do Cozmo:", e);
     }
 });
-
 // 2. Controla o botão de ligar/desligar
 document.getElementById("btnToggleCamera").addEventListener("click", async () => {
     cameraAtiva = !cameraAtiva;

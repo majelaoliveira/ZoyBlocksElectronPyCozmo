@@ -89,14 +89,22 @@ async function executarCodigo(codigoJS, enviarParaPython) {
       const tempoEspera = (v * 600) + 200;
       return new Promise(resolve => setTimeout(resolve, tempoEspera));
     },
-
-
-
-
-
-
-
-
+    checarVisao: async (tipo) => {
+        // Esta função "pergunta" para as variáveis que criamos no home.js
+        if (tipo === "FACE") {
+            return estadoVisao.rostoDetectado; 
+        } 
+        if (tipo === "QR") {
+            // Retorna true se houver algum texto lido no QR Code
+            return estadoVisao.ultimoQR !== ""; 
+        }
+        return false;
+    },
+    
+    // Opcional: bloco para ler o texto do QR Code
+    obterTextoQR: async () => {
+        return estadoVisao.ultimoQR;
+    },
 
 
 
