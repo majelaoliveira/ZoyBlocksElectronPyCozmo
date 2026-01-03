@@ -1,15 +1,41 @@
 {
-  "name": "zoyblocks-electron-cozmo",
-  "version": "0.1.0",
+  "name": "zoyblocks-cozmo",
+  "version": "1.0.0",
+  "description": "Interface Blockly para controle do Cozmo",
+  "author": "Majela",
   "main": "src/main/main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "build": "electron-builder --linux AppImage"
+  },
+  "build": {
+    "appId": "com.zoyblocks.cozmo",
+    "productName": "ZoyBlocks Cozmo",
+    "directories": {
+      "output": "dist"
+    },
+    "linux": {
+      "target": ["AppImage"],
+      "category": "Education"
+    },
+    "extraResources": [
+      {
+        "from": "venv_cozmo",
+        "to": "venv_cozmo",
+        "filter": ["**/*"]
+      },
+      {
+        "from": "python",
+        "to": "python"
+      }
+    ],
+    "files": [
+      "src/**/*",
+      "package.json"
+    ]
   },
   "devDependencies": {
-    "electron": "^29.0.0",
+    "electron": "^29.4.6",
     "electron-builder": "^26.0.12"
-  },
-  "dependencies": {
-    "dotenv": "^17.2.3"
   }
 }

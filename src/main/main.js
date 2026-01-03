@@ -20,35 +20,39 @@ const createWindow = () => {
     },
   });
 
-  mainWindow.maximize();
-  mainWindow.loadFile(path.join(__dirname, "..", "renderer", "views", "home", "home.html"));
-};
 
-// --- CONTROLE DO PROCESSO COZMO ---
+// Se main.js está em src/main/ e o HTML em src/renderer/views/...
+mainWindow.loadFile(path.join(__dirname, "..", "renderer", "views", "home", "home.html"));
+}
+
+
 function startCozmo() {
   if (cozmoProcess) return;
 
-  const pythonPath = "/home/majela/Downloads/ZoyBlocks_Electron_Cozmo/venv_cozmo/bin/python";
-  const scriptPath = path.join(app.getAppPath(), "python", "cozmo_server.py");
+  let pythonPath;
+  let scriptPath;
+
+  if (app.isPackaged) {
+    // No AppImage, os arquivos extras vão para a pasta 'resources'
+    pythonPath = path.join(process.resourcesPath, "venv_cozmo", "bin", "python");
+    scriptPath = path.join(process.resourcesPath, "python", "cozmo_server.py");
+  } else {
+    // Em desenvolvimento (npm start):
+    // __dirname está em src/main. Precisamos subir dois níveis (..) para chegar na raiz
+    pythonPath = path.join(__dirname, "..", "..", "venv_cozmo", "bin", "python");
+    scriptPath = path.join(__dirname, "..", "..", "python", "cozmo_server.py");
+  }
 
   console.log("--- INICIANDO COZMO ---");
-  cozmoProcess = spawn(pythonPath, [scriptPath], { stdio: ["pipe", "pipe", "pipe"] });
+  console.log("Python:", pythonPath);
+  console.log("Script:", scriptPath);
 
-  cozmoProcess.on('error', (err) => {
-    console.error("ERRO AO INICIAR PYTHON:", err.message);
+  cozmoProcess = spawn(pythonPath, [scriptPath], { 
+    stdio: ["pipe", "pipe", "pipe"],
+    // PYTHONUNBUFFERED garante que os logs do Python apareçam em tempo real no Electron
+    env: { ...process.env, PYTHONUNBUFFERED: "1" } 
   });
-
-  cozmoProcess.stdout.on("data", (data) => {
-    const msg = data.toString();
-    console.log(`[PYTHON]: ${msg}`);
-    if (mainWindow) {
-        mainWindow.webContents.send("cozmo-log", msg);
-    }
-  });
-
-  cozmoProcess.stderr.on("data", (data) => console.error(`[PYTHON ERROR]: ${data}`));
 }
-
 // Função para enviar JSON ao Python via stdin
 function enviarParaCozmo(comando) {
     if (cozmoProcess && cozmoProcess.stdin.writable) {
