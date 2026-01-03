@@ -1,5 +1,8 @@
 const vm = require("node:vm");
 
+let ultimoQRCode = "";
+let rostoVisivel = false;
+
 /**
  * Executa o código JavaScript gerado pelo Blockly em um ambiente seguro.
  * @param {string} codigoJS - O código a ser executado.

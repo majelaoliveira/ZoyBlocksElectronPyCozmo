@@ -6,15 +6,39 @@ import time
 from PIL import Image
 import io
 import base64
+import cv2
+import numpy as np
 
+# Carregar o detetor de rostos pré-treinado do OpenCV
+face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
+# Inicializar o detetor de QR Code
+qr_detector = cv2.QRCodeDetector()
 
 def on_camera_image(cli, image):
-    """Processa a imagem e envia para o Electron via stdout"""
-    buffered = io.BytesIO()
-    # JPEG 70% oferece um bom equilíbrio entre qualidade e velocidade de transmissão
-    image.save(buffered, format="JPEG", quality=70)
-    img_str = base64.b64encode(buffered.getvalue()).decode()
+    # 1. Converter imagem PIL para formato OpenCV (BGR)
+    open_cv_image = cv2.cvtColor(np.array(image), cv2.COLOR_RGB2BGR)
+    gray = cv2.cvtColor(open_cv_image, cv2.COLOR_BGR2GRAY)
+
+    # --- DETEÇÃO DE ROSTO ---
+    faces = face_cascade.detectMultiScale(gray, 1.1, 4)
+    for (x, y, w, h) in faces:
+        # Desenha um retângulo no rosto (opcional, aparece no streaming)
+        cv2.rectangle(open_cv_image, (x, y), (x+w, y+h), (255, 0, 0), 2)
+        # Envia evento de rosto detetado para o Electron
+        log({"type": "event", "event": "face_detected", "count": len(faces)})
+
+    # --- DETEÇÃO DE QR CODE ---
+    data, bbox, _ = qr_detector.detectAndDecode(open_cv_image)
+    if data:
+        # Se detetar um QR Code, envia o conteúdo lido
+        log({"type": "event", "event": "qrcode_detected", "data": data})
+
+    # 2. Converter de volta para enviar para o streaming do Electron
+    _, buffer = cv2.imencode('.jpg', open_cv_image)
+    img_str = base64.b64encode(buffer).decode()
     log({"type": "camera", "image": img_str})
+
+    
 
 def log(msg):
     print(json.dumps(msg), flush=True)
