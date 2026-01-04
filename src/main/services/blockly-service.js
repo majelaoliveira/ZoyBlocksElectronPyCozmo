@@ -89,6 +89,14 @@ async function executarCodigo(codigoJS, enviarParaPython) {
       const tempoEspera = (v * 600) + 200;
       return new Promise(resolve => setTimeout(resolve, tempoEspera));
     },
+
+     checarBorda: async () => {
+      // Aqui acessamos a variável global que o seu processo principal gerencia
+      // Se 'window' não existir aqui (pois é Node), usamos a variável de estado
+      return global.estadoSensores?.detectouBorda || false;
+    },
+  
+
     checarVisao: async (tipo) => {
         // Esta função "pergunta" para as variáveis que criamos no home.js
         if (tipo === "FACE") {

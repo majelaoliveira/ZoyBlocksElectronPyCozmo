@@ -5,6 +5,15 @@ const { spawn } = require("child_process");
 // Importa os serviços
 const blocklyService = require("./services/blockly-service");
 
+// --- 1. MEMÓRIA GLOBAL DO SISTEMA (Acessível pela VM do Blockly) ---
+global.estadoVisao = { 
+    rostoDetectado: false, 
+    ultimoQR: "" 
+};
+global.estadoSensores = { 
+    detectouBorda: false 
+};
+
 let mainWindow;
 let cozmoProcess = null;
 
@@ -20,7 +29,6 @@ const createWindow = () => {
     },
   });
 
-  // Caminho correto para o HTML baseado na sua árvore src/
   mainWindow.loadFile(path.join(__dirname, "..", "renderer", "views", "home", "home.html"));
 };
 
@@ -31,29 +39,49 @@ function startCozmo() {
   let scriptPath;
 
   if (app.isPackaged) {
-    // Caminhos para o AppImage
     pythonPath = path.join(process.resourcesPath, "venv_cozmo", "bin", "python");
     scriptPath = path.join(process.resourcesPath, "python", "cozmo_server.py");
   } else {
-    // Caminhos para Desenvolvimento (npm start)
     pythonPath = path.join(__dirname, "..", "..", "venv_cozmo", "bin", "python");
     scriptPath = path.join(__dirname, "..", "..", "python", "cozmo_server.py");
   }
 
-  console.log("--- INICIANDO COZMO ---");
+  console.log("--- INICIANDO COZMO COM MONITORAMENTO DE SENSORES ---");
   
   cozmoProcess = spawn(pythonPath, [scriptPath], { 
     stdio: ["pipe", "pipe", "pipe"],
     env: { ...process.env, PYTHONUNBUFFERED: "1" } 
   });
 
-  // CORREÇÃO: O ouvinte de dados deve estar DENTRO da função, 
-  // imediatamente após o processo ser criado (spawn).
+  // --- ESCUTA ATIVA DO PYTHON (Sincronização Main Process <-> VM) ---
   cozmoProcess.stdout.on("data", (data) => {
-    const msg = data.toString();
+    const rawMsg = data.toString();
+    
+    try {
+        // Divide por quebras de linha caso cheguem vários JSONs juntos
+        const lines = rawMsg.split('\n');
+        lines.forEach(line => {
+            if (!line.trim()) return;
+            const msg = JSON.parse(line);
+
+            // 1. Sincroniza Visão com a Global
+            if (msg.type === "vision_event") {
+                global.estadoVisao.rostoDetectado = msg.face;
+                global.estadoVisao.ultimoQR = msg.qrcode || "";
+            }
+
+            // 2. Sincroniza Sensores (Cliff/Penhasco) com a Global
+            if (msg.type === "cliff_event") {
+                global.estadoSensores.detectouBorda = msg.detected;
+                console.log(`[SENSOR] Borda detectada: ${msg.detected}`);
+            }
+        });
+    } catch (e) {
+        // Ignora mensagens que não são JSON (ex: prints de debug do Python)
+    }
+
     if (mainWindow) {
-        // Envia logs e frames da câmera para o Renderer (home.js)
-        mainWindow.webContents.send("cozmo-log", msg);
+        mainWindow.webContents.send("cozmo-log", rawMsg);
     }
   });
 
@@ -67,35 +95,30 @@ function startCozmo() {
   });
 }
 
-// Função para enviar JSON ao Python via stdin
 function enviarParaCozmo(comando) {
     if (cozmoProcess && cozmoProcess.stdin.writable) {
         const jsonStr = JSON.stringify(comando) + "\n";
         cozmoProcess.stdin.write(jsonStr);
-        console.log("Enviado para Python:", jsonStr);
         return true;
     }
-    console.error("Erro: stdin do Python não está acessível.");
     return false;
 }
 
 // --- HANDLERS IPC ---
 
-// Iniciar o robô
 ipcMain.handle("cozmo:start", () => {
   startCozmo();
   return { status: true };
 });
 
-// Ligar/Desligar Câmera
 ipcMain.handle("cozmo:camera-toggle", (event, state) => {
   enviarParaCozmo({ cmd: "toggle_camera", enable: state });
   return { status: true };
 });
 
-// Executar blocos do Blockly
 ipcMain.handle('executar-codigo', async (event, codigoJS) => {
     try {
+        // A VM agora lerá os valores de global.estadoVisao e global.estadoSensores
         return await blocklyService.executarCodigo(codigoJS, enviarParaCozmo);
     } catch (err) {
         console.error("Erro na execução:", err);
@@ -103,7 +126,6 @@ ipcMain.handle('executar-codigo', async (event, codigoJS) => {
     }
 });
 
-// Handlers auxiliares
 ipcMain.handle("open-external", (event, url) => shell.openExternal(url));
 
 app.whenReady().then(createWindow);
