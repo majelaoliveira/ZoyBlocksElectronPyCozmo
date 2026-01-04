@@ -15,25 +15,30 @@ face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_fronta
 qr_detector = cv2.QRCodeDetector()
 
 def on_camera_image(cli, image):
-    # 1. Converter imagem PIL para formato OpenCV (BGR)
     open_cv_image = cv2.cvtColor(np.array(image), cv2.COLOR_RGB2BGR)
     gray = cv2.cvtColor(open_cv_image, cv2.COLOR_BGR2GRAY)
 
     # --- DETEÇÃO DE ROSTO ---
     faces = face_cascade.detectMultiScale(gray, 1.1, 4)
-    for (x, y, w, h) in faces:
-        # Desenha um retângulo no rosto (opcional, aparece no streaming)
-        cv2.rectangle(open_cv_image, (x, y), (x+w, y+h), (255, 0, 0), 2)
-        # Envia evento de rosto detetado para o Electron
-        log({"type": "event", "event": "face_detected", "count": len(faces)})
+    achou_rosto = len(faces) > 0  # True se houver 1 ou mais rostos
+
+    if achou_rosto:
+        for (x, y, w, h) in faces:
+            cv2.rectangle(open_cv_image, (x, y), (x+w, y+h), (255, 0, 0), 2)
 
     # --- DETEÇÃO DE QR CODE ---
     data, bbox, _ = qr_detector.detectAndDecode(open_cv_image)
-    if data:
-        # Se detetar um QR Code, envia o conteúdo lido
-        log({"type": "event", "event": "qrcode_detected", "data": data})
+    qr_lido = data if data else ""
 
-    # 2. Converter de volta para enviar para o streaming do Electron
+    # --- O SEGREDO ESTÁ AQUI: Nomes de chaves idênticos ao JS ---
+    # Enviamos SEMPRE o estado atual para o Electron
+    log({
+        "type": "vision_event", 
+        "face": achou_rosto, 
+        "qrcode": qr_lido
+    })
+
+    # Envio da imagem para o streaming
     _, buffer = cv2.imencode('.jpg', open_cv_image)
     img_str = base64.b64encode(buffer).decode()
     log({"type": "camera", "image": img_str})
