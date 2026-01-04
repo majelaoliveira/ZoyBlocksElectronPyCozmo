@@ -38,7 +38,10 @@ def on_camera_image(cli, image):
     img_str = base64.b64encode(buffer).decode()
     log({"type": "camera", "image": img_str})
 
-    
+def on_cliff_detected(cli, state):
+    # state será True se o sensor detectar um "vão" (penhasco)
+    # state será False se o robô estiver em terreno seguro
+    log({"type": "cliff_event", "detected": state})
 
 def log(msg):
     print(json.dumps(msg), flush=True)
@@ -56,6 +59,8 @@ cli = pycozmo.Client()
 cli.start()
 cli.connect()
 cli.wait_for_robot()
+
+cli.add_handler(pycozmo.event.EvtCliffDetectedChange, on_cliff_detected)
 
 try:
     # Agora ele vai buscar a pasta 'animations' dentro do base_path

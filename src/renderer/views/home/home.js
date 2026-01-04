@@ -2,6 +2,14 @@ window.estadoVisao = {
     rostoDetectado: false,
     ultimoQR: ""
 };
+
+// Atualize sua memória global no topo do home.js
+window.estadoSensores = {
+    detectouBorda: false,
+    bateria: 0
+};
+
+
 console.log("🧠 Memória de Visão Inicializada!");
 
 // home.js - Versão Cozmo Integrada
@@ -31,7 +39,7 @@ const assetsToLoad = {
     { name: "cozmo_blocks", type: "js", path: `${window.paths.blocks_device.cozmo_blocks}cozmo_motions.js` },
     { name: "cozmo_luzes", type: "js", path: `${window.paths.blocks_device.cozmo_blocks}cozmo_luzes.js` },
     { name: "cozmo_vision", type: "js", path: `${window.paths.blocks_device.cozmo_blocks}cozmo_vision.js` },
-    
+    { name: "cozmo_sensors", type: "js", path: `${window.paths.blocks_device.cozmo_blocks}cozmo_sensors.js` },
   ]
 };
 
@@ -70,6 +78,11 @@ async function initApp() {
         return false;
 
      };
+
+    window.checarBorda = async function() {
+    return window.estadoSensores.detectouBorda;
+    };
+
     // Atualiza a área de código sempre que o bloco mudar
     workspace.addChangeListener(() => {
       const code = Blockly.JavaScript.workspaceToCode(workspace);
@@ -149,6 +162,15 @@ window.electronAPI.onCozmoLog((data) => {
     try {
         const msg = JSON.parse(data);
         
+        // Dentro do seu onCozmoLog no home.js
+        if (msg.type === "cliff_event") {
+            window.estadoSensores.detectouBorda = msg.detected;
+    
+         if (msg.detected) {
+           console.warn("⚠️ PERIGO: Borda detectada!");
+           exibirLogNoTerminal("Alerta: Cozmo chegou na borda!");
+         }
+        }
         // Streaming da Câmera
         if (msg.type === "camera") {
             const view = document.getElementById("cozmoView");
